@@ -1,0 +1,12 @@
+{
+  "name": "dev-workflow",
+  "description": "Development workflow tools: specialized agents, commands, skills, and hooks for efficient coding sessions",
+  "version": "1.0.0",
+  "author": {
+    "name": "slanycukr"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}

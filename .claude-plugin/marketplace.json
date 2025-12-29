@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "dev-workflow-local",
+  "plugins": [
+    {
+      "id": "dev-workflow",
+      "name": "Development Workflow Tools",
+      "description": "Specialized agents, commands, skills, and hooks for efficient coding sessions",
+      "version": "1.0.0",
+      "author": {
+        "name": "slanycukr"
+      },
+      "source": {
+        "type": "local",
+        "path": "."
+      }
+    }
+  ]
+}

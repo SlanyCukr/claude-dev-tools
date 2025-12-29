@@ -1,0 +1,49 @@
+{
+  "description": "Development workflow hooks: subagent guidance, token efficiency, and honesty patterns",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/speckit_subagent_context.py\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/bash_output_monitor.py\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You are evaluating if a subagent should stop. Subagent context: $ARGUMENTS\n\nBased on the 'Honesty Over Completion' principle, evaluate:\n1. Did the subagent complete its ONE focused task fully?\n2. Did it clearly state what was NOT completed (if anything)?\n3. Did it avoid claiming 'done' if steps were skipped?\n4. Did it use the 'Early Bail Pattern' appropriately (returned early with clarification request if task was unclear/too broad)?\n\nIf the subagent:\n- Completed the task fully OR explicitly stated what wasn't done: approve\n- Claimed completion but evidence suggests gaps: block with reason\n- Asked for clarification (early bail): approve\n\nRespond with JSON: {\"decision\": \"approve\" or \"block\", \"reason\": \"your explanation\"}",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"SessionStart\", \"additionalContext\": \"REMINDER: Subagent usage is PIVOTAL for preserving main session context. Give each subagent ONE small, focused task. Max 2-3 subagents in parallel. Not completing work is NOT an error - only silent failures or claiming done when steps were skipped.\"}}'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
