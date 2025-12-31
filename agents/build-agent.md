@@ -32,6 +32,14 @@ Code: [paths to reference/modify - agent reads them]
 - **No extras**: Do exactly what's asked. No bonus refactors, tests, or cleanup.
 - **Justify deviations**: If touching more files than expected, explain why in Notes.
 
+## Code Quality Constraints
+
+- **No fallbacks**: Don't add error handling or validation for scenarios that can't happen. Trust internal code.
+- **No premature abstractions**: Three similar lines > one clever helper. Only abstract after 3+ real uses.
+- **No backwards-compat hacks**: No `_unused` vars, no re-exports for "compatibility", no `// removed` comments.
+- **Only validate boundaries**: User input, external APIs. Never internal function calls.
+- **Delete, don't comment**: If code is unused, remove it entirely.
+
 ## Return Format
 
 ```

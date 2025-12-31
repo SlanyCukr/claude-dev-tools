@@ -31,7 +31,16 @@ tools: Read, Grep, Glob, Bash
 
 - **Critical**: Security vulnerabilities, data loss, crashes
 - **High**: Bugs that will happen in practice
-- **Medium**: Quality issues, code smells
+- **Medium**: Quality issues, code smells, over-engineering
+
+## Anti-Patterns to Flag (High confidence)
+
+- **Unnecessary fallbacks**: Error handling for impossible scenarios
+- **Premature abstractions**: Helpers/utilities used only once
+- **Defensive validation**: Checks on trusted internal data
+- **Backwards-compat cruft**: `_unused` vars, re-exports, `// removed` comments
+- **Dead code**: Commented-out code, unreachable branches
+- **Hypothetical features**: Config for unused options, unused parameters
 
 ## Return Format
 
