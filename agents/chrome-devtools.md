@@ -24,6 +24,41 @@ If DevTools connection fails at runtime: report error and stop (don't retry endl
 - Efficiency: aim for <20 tool calls; parallelize independent calls.
 - Fail fast: after 2 failures for the same action, stop and report what you observed.
 
+## Reliability
+
+### Mandatory Wait Pattern
+**ALWAYS use `wait_for` before `click`/`fill` actions.** Never assume elements are immediately present.
+
+### Selector Priority
+Use selectors in this priority order:
+1. `[data-testid]` - Most stable, purpose-built for testing
+2. `[aria-label]` - Accessible, usually stable
+3. Semantic HTML tags - `button`, `input`, `label`, `select`
+4. CSS classes - Last resort; fragile if class names change
+
+### SPA/Dynamic Content Handling
+- After navigation, **wait for network idle** or **wait for specific elements** before proceeding
+- If element doesn't appear immediately, use `wait_for` with reasonable timeout (default 5000ms) before failing
+- Dynamic content may require waiting for loading spinners to disappear
+
+### Failure Handling
+Take screenshot before reporting failure - aids debugging.
+
+**Common failure categories:**
+
+| Failure | Response |
+| --- | --- |
+| Element not found | Wait longer (increase timeout), try different selector, screenshot + report |
+| Element not clickable (covered by overlay) | Screenshot + report obstruction. NOTE: CDP can click through overlays that block human users - always report if element appears visually obstructed |
+| Stale element reference | Retry once after short wait (500-1000ms) |
+| Network timeout | Report with last known state + screenshot |
+| Dialog/modal unexpected | Handle dialog if possible, otherwise screenshot + report |
+
+### Screenshot Debugging
+- Take screenshot **before** reporting any failure
+- Include selector attempted and timeout value in error report
+- Save screenshots using Write tool for reference
+
 ## Return Format
 ```
 Status: complete | partial | failed

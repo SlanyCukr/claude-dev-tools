@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chrome DevTools Agent Test Page</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; }
+    h1 { color: #333; }
+    section { margin: 30px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+    h2 { margin-top: 0; color: #555; }
+    button { padding: 8px 16px; margin: 5px; cursor: pointer; }
+    input { padding: 8px; margin: 5px; }
+    .hidden { display: none; }
+    .result { margin-top: 10px; padding: 10px; background: #f0f0f0; border-radius: 4px; }
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 100; }
+    .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 8px; z-index: 101; display: none; }
+    .similar-btn { background: #4a90d9; color: white; border: none; border-radius: 4px; }
+    .error { color: red; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Chrome DevTools Agent Test Page</h1>
+  <p>This page contains edge cases to test browser automation reliability.</p>
+
+  <!-- Test 1: Delayed Content -->
+  <section id="delayed-content">
+    <h2>1. Delayed Content (appears after 2s)</h2>
+    <button data-testid="load-delayed" onclick="loadDelayedContent()">Load Delayed Content</button>
+    <div id="delayed-result" class="result hidden">
+      <p data-testid="delayed-text">This content appeared after a 2 second delay!</p>
+      <button data-testid="delayed-action">Click me (I appeared late)</button>
+    </div>
+  </section>
+
+  <!-- Test 2: Dynamic Elements -->
+  <section id="dynamic-elements">
+    <h2>2. Dynamic Elements (content changes on interaction)</h2>
+    <p>Counter: <span data-testid="counter">0</span></p>
+    <button data-testid="increment" onclick="incrementCounter()">Increment</button>
+    <button data-testid="reset" onclick="resetCounter()">Reset</button>
+    <div id="dynamic-result" class="result hidden" data-testid="dynamic-result"></div>
+  </section>
+
+  <!-- Test 3: Console Errors -->
+  <section id="console-errors">
+    <h2>3. Console Errors (check console for errors)</h2>
+    <button data-testid="trigger-error" onclick="triggerConsoleError()">Trigger Console Error</button>
+    <button data-testid="trigger-warning" onclick="triggerConsoleWarning()">Trigger Console Warning</button>
+    <button data-testid="trigger-log" onclick="console.log('Test log message')">Trigger Console Log</button>
+  </section>
+
+  <!-- Test 4: Network Requests -->
+  <section id="network-requests">
+    <h2>4. Network Requests (monitor network tab)</h2>
+    <button data-testid="fetch-success" onclick="fetchData(true)">Fetch (Success)</button>
+    <button data-testid="fetch-fail" onclick="fetchData(false)">Fetch (404 Error)</button>
+    <div id="network-result" class="result hidden" data-testid="network-result"></div>
+  </section>
+
+  <!-- Test 5: Missing Elements -->
+  <section id="missing-elements">
+    <h2>5. Missing Elements (references non-existent elements)</h2>
+    <button data-testid="click-missing" onclick="clickMissingElement()">Try to interact with #nonexistent</button>
+    <div id="missing-result" class="result" data-testid="missing-result">Result will appear here</div>
+  </section>
+
+  <!-- Test 6: Form Validation -->
+  <section id="form-validation">
+    <h2>6. Form Validation</h2>
+    <form id="test-form" onsubmit="return validateForm(event)">
+      <div>
+        <label>Email (required, must be valid):</label><br>
+        <input type="text" data-testid="email-input" id="email-input" placeholder="Enter email">
+        <span id="email-error" class="error hidden">Invalid email address</span>
+      </div>
+      <div style="margin-top: 10px;">
+        <label>Age (required, must be 18+):</label><br>
+        <input type="number" data-testid="age-input" id="age-input" placeholder="Enter age">
+        <span id="age-error" class="error hidden">Must be 18 or older</span>
+      </div>
+      <button type="submit" data-testid="submit-form">Submit Form</button>
+    </form>
+    <div id="form-result" class="result hidden" data-testid="form-result"></div>
+  </section>
+
+  <!-- Test 7: Multiple Similar Elements -->
+  <section id="similar-elements">
+    <h2>7. Multiple Similar Elements (test selector specificity)</h2>
+    <button class="similar-btn" onclick="clickSimilar(1)">Button 1</button>
+    <button class="similar-btn" onclick="clickSimilar(2)">Button 2</button>
+    <button class="similar-btn" data-testid="target-button" onclick="clickSimilar(3)">Button 3 (target)</button>
+    <button class="similar-btn" onclick="clickSimilar(4)">Button 4</button>
+    <div id="similar-result" class="result" data-testid="similar-result">Click Button 3 to pass this test</div>
+  </section>
+
+  <!-- Test 8: Modal/Overlay -->
+  <section id="modal-test">
+    <h2>8. Modal/Overlay (element behind overlay is not clickable)</h2>
+    <button data-testid="show-modal" onclick="showModal()">Show Modal</button>
+    <button data-testid="hidden-button" onclick="alert('You clicked the hidden button!')">This button will be covered by modal</button>
+  </section>
+
+  <!-- Overlay and Modal -->
+  <div class="overlay" id="overlay" onclick="hideModal()"></div>
+  <div class="modal" id="modal">
+    <h3>Modal Dialog</h3>
+    <p>The button behind this modal is not clickable.</p>
+    <button data-testid="close-modal" onclick="hideModal()">Close Modal</button>
+  </div>
+
+  <script>
+    // Test 1: Delayed content
+    function loadDelayedContent() {
+      setTimeout(() => {
+        document.getElementById('delayed-result').classList.remove('hidden');
+      }, 2000);
+    }
+
+    // Test 2: Dynamic elements
+    let counter = 0;
+    function incrementCounter() {
+      counter++;
+      document.querySelector('[data-testid="counter"]').textContent = counter;
+      if (counter >= 5) {
+        const result = document.getElementById('dynamic-result');
+        result.classList.remove('hidden');
+        result.textContent = 'Counter reached 5! Dynamic content appeared.';
+      }
+    }
+    function resetCounter() {
+      counter = 0;
+      document.querySelector('[data-testid="counter"]').textContent = 0;
+      document.getElementById('dynamic-result').classList.add('hidden');
+    }
+
+    // Test 3: Console errors
+    function triggerConsoleError() {
+      console.error('TEST ERROR: This is an intentional error for testing');
+      throw new Error('Intentional JavaScript error for testing');
+    }
+    function triggerConsoleWarning() {
+      console.warn('TEST WARNING: This is an intentional warning for testing');
+    }
+
+    // Test 4: Network requests
+    async function fetchData(success) {
+      const result = document.getElementById('network-result');
+      result.classList.remove('hidden');
+      result.textContent = 'Fetching...';
+
+      try {
+        const url = success
+          ? 'https://httpbin.org/get'
+          : 'https://httpbin.org/status/404';
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        result.textContent = 'Fetch successful! Check network tab for details.';
+      } catch (error) {
+        result.textContent = `Fetch failed: ${error.message}`;
+      }
+    }
+
+    // Test 5: Missing elements
+    function clickMissingElement() {
+      const element = document.getElementById('nonexistent');
+      const result = document.getElementById('missing-result');
+      if (element) {
+        result.textContent = 'Element found (unexpected!)';
+      } else {
+        result.textContent = 'Element #nonexistent does not exist (expected)';
+      }
+    }
+
+    // Test 6: Form validation
+    function validateForm(event) {
+      event.preventDefault();
+      let valid = true;
+
+      const email = document.getElementById('email-input').value;
+      const emailError = document.getElementById('email-error');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        emailError.classList.remove('hidden');
+        valid = false;
+      } else {
+        emailError.classList.add('hidden');
+      }
+
+      const age = parseInt(document.getElementById('age-input').value);
+      const ageError = document.getElementById('age-error');
+      if (isNaN(age) || age < 18) {
+        ageError.classList.remove('hidden');
+        valid = false;
+      } else {
+        ageError.classList.add('hidden');
+      }
+
+      const result = document.getElementById('form-result');
+      result.classList.remove('hidden');
+      result.textContent = valid ? 'Form submitted successfully!' : 'Form validation failed. Check errors above.';
+
+      return false;
+    }
+
+    // Test 7: Similar elements
+    function clickSimilar(num) {
+      const result = document.getElementById('similar-result');
+      if (num === 3) {
+        result.textContent = 'Correct! You clicked Button 3 using data-testid.';
+        result.style.background = '#d4edda';
+      } else {
+        result.textContent = `Wrong button (${num}). Use data-testid to target Button 3.`;
+        result.style.background = '#f8d7da';
+      }
+    }
+
+    // Test 8: Modal
+    function showModal() {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('modal').style.display = 'block';
+    }
+    function hideModal() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('modal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
