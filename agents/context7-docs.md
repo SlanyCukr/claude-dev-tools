@@ -1,7 +1,7 @@
 ---
 name: context7-docs
 description: "Library docs lookup. CALLING: Give library name + items to find (max 5). Example: 'FastAPI: Query, Depends, HTTPException'."
-tools: mcp__context7__resolve-library-id, mcp__context7__get-library-docs
+tools: mcp__context7__resolve-library-id, mcp__context7__query-docs
 model: sonnet
 ---
 
@@ -42,7 +42,7 @@ Suggestion: Split into groups of 3-5:
 ## Lookup Process
 
 1. Call `resolve-library-id` with the library name
-2. If found → call `get-library-docs` with the library ID and requested items
+2. If found → call `query-docs` with the library ID and requested items
 3. If not found → recommend web-research agent instead
 
 ## Handling Failures
