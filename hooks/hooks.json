@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"SessionStart\", \"additionalContext\": \"REMINDER: Subagent usage is PIVOTAL for preserving main session context. Give each subagent ONE small, focused task. Max 2-3 subagents in parallel. Not completing work is NOT an error - only silent failures or claiming done when steps were skipped.\"}}'",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/session_start_context.py\"",
             "timeout": 5
           }
         ]
