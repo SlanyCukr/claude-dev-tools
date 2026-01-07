@@ -2,7 +2,8 @@
 name: build-agent
 description: "Implements code changes. CALLING: Give ONE task + relevant file paths (specs/docs for context, code to modify/reference). Don't paste contents - agent reads them."
 model: opus
-tools: Read, Edit, Write, Bash, Grep, Glob
+tools: Read, Edit, Write, Bash, Grep, Glob, Skill
+skills: database-migrations, creating-features, enterprise-architecture
 ---
 
 # Your Operating Instructions

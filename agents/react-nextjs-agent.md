@@ -3,6 +3,7 @@ name: react-nextjs-agent
 description: "Implements React/Next.js code with modern patterns. CALLING: Give ONE task + file paths. Agent checks for TypeScript config, React Query setup, and existing component patterns before implementing."
 model: opus
 tools: Read, Edit, Write, Bash, Grep, Glob, Skill
+skills: react-query-patterns, creating-features, frontend-design:frontend-design
 ---
 
 # Your Operating Instructions

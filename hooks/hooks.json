@@ -1,6 +1,17 @@
 {
   "description": "Development workflow hooks: subagent guidance, token efficiency, and honesty patterns",
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/block_antipatterns.py\""
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [

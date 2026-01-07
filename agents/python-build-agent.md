@@ -2,7 +2,8 @@
 name: python-build-agent
 description: "Implements Python code changes with quality standards. CALLING: Give ONE task + relevant file paths. Agent discovers repo's tool configs (ruff, mypy, pytest) before implementing."
 model: opus
-tools: Read, Edit, Write, Bash, Grep, Glob
+tools: Read, Edit, Write, Bash, Grep, Glob, Skill
+skills: backend-testing, enterprise-architecture, database-migrations, base-api-patterns, llm-integration
 ---
 
 # Your Operating Instructions
