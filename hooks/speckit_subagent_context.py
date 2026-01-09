@@ -33,21 +33,30 @@ SPECKIT_GUIDANCE = {
 """,
     "implement": """
 ## Subagent Guidance for speckit.implement
-IMPORTANT: Delegate each task to a `zai-speckit-plugin:build-agent` subagent.
+IMPORTANT: Delegate each task to the appropriate specialized subagent:
+
+### Choose the Right Agent
+- `zai-speckit-plugin:python-build-agent` - Python/backend code (type hints, Ruff/mypy aware)
+- `zai-speckit-plugin:react-nextjs-agent` - React/Next.js frontend (TanStack Query, TypeScript)
+- `zai-speckit-plugin:build-agent` - Other languages/general purpose
 
 ### Task Prompt Format (CRITICAL)
-Use build-agent's expected format. DO NOT paste task descriptions - agent reads files.
+Use the agent's expected format. DO NOT paste task descriptions - agent reads files.
 
 **BAD** (pastes full description):
 ```
-Task(build-agent, "Implement T012 [US1] Define 10+ PRIORITY_SCENARIOS covering high/medium/low classifications with expected_priority field mapping to HIGH/MEDIUM/LOW enum values...")
+Task(python-build-agent, "Implement T012 [US1] Define 10+ PRIORITY_SCENARIOS covering high/medium/low classifications with expected_priority field mapping to HIGH/MEDIUM/LOW enum values...")
 ```
 
 **GOOD** (structured format - agent reads spec files):
 ```
-Task(build-agent, "Task: T012 - Define PRIORITY_SCENARIOS
+Task(python-build-agent, "Task: T012 - Define PRIORITY_SCENARIOS
 Context: specs/001-llm-tests/
 Code: backend/tests/llm_integration/helpers/scenarios.py")
+
+Task(react-nextjs-agent, "Task: T015 - Create PriorityBadge component
+Context: specs/001-llm-tests/
+Code: frontend/src/components/PriorityBadge.tsx")
 ```
 
 ### Execution Strategy
@@ -59,7 +68,7 @@ Code: backend/tests/llm_integration/helpers/scenarios.py")
 """,
     "tasks": """
 ## Subagent Guidance for speckit.tasks
-- May need `Explore` to understand file structure for accurate task breakdown
+- Use `zai-speckit-plugin:codebase-explorer` to understand file structure for accurate task breakdown
 - Consider existing patterns when defining implementation files
 """,
 }
