@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: "Reviews code for bugs/quality. CALLING: Give file paths or 'git diff' scope - don't paste code. Optional: focus area (bugs|conventions|simplicity). Reports only >=80% confidence issues."
+description: "Reviews code for bugs, anti-patterns, and quality issues. Use for: code quality analysis, finding tech debt, identifying refactoring opportunities. CALLING: Give file paths or 'git diff' scope. Focus areas: bugs | conventions | simplicity | refactoring. Reports >=80% confidence issues only."
 model: opus
 tools: Read, Grep, Glob, Bash
 ---
@@ -50,7 +50,7 @@ Suggestion: Split into separate reviews:
 
 - **Critical**: Security vulnerabilities, data loss, crashes
 - **High**: Bugs that will happen in practice
-- **Medium**: Quality issues, code smells, over-engineering
+- **Medium**: Quality issues, code smells, over-engineering, refactoring opportunities
 
 ## Anti-Patterns to Flag
 

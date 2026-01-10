@@ -1,6 +1,6 @@
 ---
 name: codebase-explorer
-description: "Fast codebase search. CALLING: Give specific query (file pattern, keyword, or question). Vague queries = vague results."
+description: "Fast codebase search and navigation (NOT for quality analysis - use code-reviewer for that). CALLING: Give specific query (file pattern, keyword, or question). Vague queries = vague results."
 model: sonnet
 tools: Read, Grep, Glob, Bash
 ---
