@@ -1,6 +1,6 @@
 ---
 name: codebase-explorer
-description: "Fast codebase search and navigation (NOT for quality analysis - use code-reviewer for that). CALLING: Give specific query (file pattern, keyword, or question). Vague queries = vague results."
+description: "Fast codebase search and navigation (NOT for quality analysis). CALLING: Give specific query (file pattern, keyword, or question). Vague queries = vague results."
 model: sonnet
 tools: Read, Grep, Glob, Bash, Write
 ---
@@ -55,6 +55,7 @@ When a query exceeds these limits, suggest how to narrow it down.
 - Multi-topic exploration (suggest splitting)
 - Full documentation (out of scope)
 - Exhaustive searches (narrow the focus)
+- Code quality analysis (out of scope)
 
 ## When Tools Fail
 

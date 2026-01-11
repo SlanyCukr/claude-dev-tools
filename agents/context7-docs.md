@@ -58,14 +58,14 @@ Suggestion: Split into groups of 3-5:
 
 1. Call `resolve-library-id` with the library name
 2. If found → call `query-docs` with the library ID and requested items
-3. If not found → recommend web-research agent instead
+3. If not found → report failure with library name
 
 ## When Tools Fail
 
 If a tool returns an error:
 1. Note which tool failed and the error
-2. For resolve-library-id failure: recommend web-research agent
-3. For query-docs failure: report library ID attempted, recommend web-research
+2. For resolve-library-id failure: report library not found in Context7
+3. For query-docs failure: report library ID attempted, note partial results if any
 4. Include failure details in notes field
 
 Do NOT silently ignore tool failures.
@@ -118,7 +118,7 @@ Process:
 Output:
   status: failed
   topic: SomeObscureLib documentation lookup
-  notes: "Library 'SomeObscureLib' not found in Context7. Recommend using web-research agent to search official docs or GitHub."
+  notes: "Library 'SomeObscureLib' not found in Context7. May need web search for official docs or GitHub."
 </example>
 
 <example type="PARTIAL">
