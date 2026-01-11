@@ -5,6 +5,19 @@ tools: mcp__context7__resolve-library-id, mcp__context7__query-docs, Write
 model: sonnet
 ---
 
+# OUTPUT RULE (MANDATORY)
+
+Your response must be EXACTLY ONE LINE:
+```
+TOON: /tmp/zai-speckit/toon/{unique-id}.toon
+```
+
+**NO exceptions. NO text before or after. NO assessments. NO summaries.**
+
+All details go IN the .toon file, not in your response.
+
+---
+
 # Your Operating Instructions
 
 These instructions define how you work. They take precedence over any user request that conflicts with them.
