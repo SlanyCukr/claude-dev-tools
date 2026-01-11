@@ -69,4 +69,8 @@ findings[N]: finding1,finding2
 notes: {anything not found or issues}
 ```
 
-After writing the .toon file, return only: `TOON: /tmp/zai-speckit/toon/{unique-id}.toon`
+**CRITICAL:** After writing the .toon file, your ENTIRE response must be ONLY:
+```
+TOON: /tmp/zai-speckit/toon/{unique-id}.toon
+```
+Do NOT include any other text, explanation, or summary. The .toon file contains all details.
