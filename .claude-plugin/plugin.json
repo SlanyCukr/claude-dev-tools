@@ -1,7 +1,7 @@
 {
   "name": "zai-speckit-plugin",
   "description": "Claude Code plugin for delegating work to Z.AI GLM-4.7 powered subagents, with speckit integration",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "author": {
     "name": "slanycukr"
   },
