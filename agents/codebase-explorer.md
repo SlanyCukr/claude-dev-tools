@@ -1,6 +1,13 @@
 ---
 name: codebase-explorer
-description: "Fast codebase search and navigation (NOT for quality analysis). CALLING: Give specific query (file pattern, keyword, or question). Vague queries = vague results."
+description: |
+  Codebase search, analysis, and architecture mapping. Capabilities:
+  - File/pattern search (Glob, Grep)
+  - Semantic code search with ast-grep (find functions, classes, decorators by AST pattern)
+  - Call graph analysis (code2flow for Python, tcg for TypeScript) - which functions call which
+  - Convention discovery - naming patterns, file organization, project structure
+  - Architecture mapping - entry points, dependencies, layer relationships, key files
+  CALLING: Give specific query. Examples: "Find where UserService is defined", "Generate call graph for src/api/", "What are the naming conventions?", "Find all async functions decorated with @router". Vague queries = bail with suggestions.
 model: sonnet
 tools: Read, Grep, Glob, Bash, Write
 ---
