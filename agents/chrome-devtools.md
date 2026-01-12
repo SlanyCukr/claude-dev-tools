@@ -67,11 +67,14 @@ Use `wait_for` before `click`/`fill` actions. Elements may not be immediately pr
 Screenshots are artifacts for the orchestrator to review - you cannot analyze image contents.
 
 When taking screenshots:
-1. Take them at key moments (before failure, after action, final state)
-2. Include screenshot paths in TOON output: `screenshots[N]: path1,path2`
-3. Describe what the screenshot SHOULD show (e.g., "login form visible", "error modal appeared")
+1. **Always use the `filePath` parameter** to save to `/tmp/zai-speckit/screenshots/{unique-id}.png`
+2. Take them at key moments (before failure, after action, final state)
+3. Include the saved file path in TOON output: `screenshots[N]: /tmp/zai-speckit/screenshots/...`
+4. Describe what the screenshot SHOULD show (e.g., "login form visible", "error modal appeared")
 
-Do NOT attempt to interpret screenshot contents.
+Do NOT:
+- Attempt to interpret screenshot contents
+- Make up URLs or paths - only use the actual `filePath` you specified in `take_screenshot`
 
 ## Handling Failures
 
@@ -105,21 +108,27 @@ Do NOT silently ignore tool failures.
 <examples>
 <example type="SUCCESS">
 Request: "Navigate to https://example.com/login and fill in username 'testuser'"
-Actions: navigate_page, wait_for('[data-testid="username"]'), fill('[data-testid="username"]', 'testuser')
+Actions:
+  - navigate_page("https://example.com/login")
+  - wait_for('[data-testid="username"]')
+  - fill('[data-testid="username"]', 'testuser')
+  - take_screenshot(filePath="/tmp/zai-speckit/screenshots/login-filled-abc123.png")
 Output:
   status: complete
   task: Navigated to login page and filled username field
-  screenshots[1]: /tmp/screenshots/login-filled.png
+  screenshots[1]: /tmp/zai-speckit/screenshots/login-filled-abc123.png
   notes: Username field populated, ready for password
 </example>
 
 <example type="FAILURE">
 Request: "Click the submit button on current page"
-Actions: wait_for('[data-testid="submit"]') - timeout after 5000ms
+Actions:
+  - wait_for('[data-testid="submit"]') - timeout after 5000ms
+  - take_screenshot(filePath="/tmp/zai-speckit/screenshots/no-submit-xyz789.png")
 Output:
   status: failed
   task: Attempted to click submit button
-  screenshots[1]: /tmp/screenshots/no-submit-found.png
+  screenshots[1]: /tmp/zai-speckit/screenshots/no-submit-xyz789.png
   notes: "Submit button not found with selector [data-testid='submit']. Screenshot shows current page state. Try: button[type='submit'] or .submit-btn"
 </example>
 </examples>
