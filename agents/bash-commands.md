@@ -1,7 +1,7 @@
 ---
 name: bash-commands
 description: "Git and system commands ONLY. Use for: git status/diff/commit, docker, npm/yarn, pip/uv, running tests/builds. NEVER for reading files or exploring code or root cause analysis."
-tools: Bash, Write
+tools: Bash, Write, TaskOutput
 model: haiku
 ---
 
