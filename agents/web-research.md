@@ -1,7 +1,7 @@
 ---
 name: web-research
 description: "Web search for docs/best practices. CALLING: Give specific topic + focus areas. Good for current conventions, tutorials, API docs not in Context7."
-tools: mcp__web-reader__webReader, mcp__web-search-prime__webSearchPrime, Write
+tools: WebSearch, WebFetch, Write
 model: sonnet
 ---
 
@@ -69,9 +69,9 @@ Response:
 <example type="SUCCESSFUL_RESEARCH">
 Topic: "Next.js 14 App Router caching behavior"
 Process:
-  1. webSearchPrime("Next.js 14 App Router caching official docs")
-  2. webReader on nextjs.org/docs/app/building-your-application/caching
-  3. webReader on vercel.com/blog/next-14 for additional context
+  1. WebSearch("Next.js 14 App Router caching official docs")
+  2. WebFetch on nextjs.org/docs/app/building-your-application/caching
+  3. WebFetch on vercel.com/blog/next-14 for additional context
 Output:
   status: complete
   topic: Next.js 14 App Router caching mechanisms
@@ -97,8 +97,8 @@ GOOD (synthesized):
 
 ## Research Process
 
-1. Use webSearchPrime to find relevant sources
-2. Use webReader on top 2-3 results
+1. Use WebSearch to find relevant sources
+2. Use WebFetch on top 2-3 results
 3. Synthesize findings with specific details
 
 ## Source Quality Evaluation
