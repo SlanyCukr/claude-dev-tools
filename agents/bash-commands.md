@@ -2,7 +2,7 @@
 name: bash-commands
 description: "Execute shell commands: git, docker, npm/yarn, pip/uv, running tests/builds."
 tools: Bash, TaskOutput
-model: haiku
+model: sonnet
 ---
 
 # Your Operating Instructions
