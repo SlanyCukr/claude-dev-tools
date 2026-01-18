@@ -98,7 +98,7 @@ def main():
     log_debug(f"Changed: {fixed != command}")
 
     if fixed != command:
-        # Block the command and tell Claude to use the safer version
+        # Block the command - try stderr + exit 2 for blocking
         result = {
             "hookSpecificOutput": {
                 "permissionDecision": "deny",
@@ -106,9 +106,9 @@ def main():
             "systemMessage": f"Command blocked: output could be too large. Use this instead: {fixed}",
         }
         output = json.dumps(result)
-        log_debug(f"Output (DENY): {output}")
-        print(output)
-        sys.exit(2)  # Exit 2 = blocking error
+        log_debug(f"Output (DENY to stderr): {output}")
+        print(output, file=sys.stderr)  # Print to stderr for exit 2
+        sys.exit(2)  # Exit 2 = blocking error, stderr fed to Claude
     else:
         log_debug("No modification needed")
 
