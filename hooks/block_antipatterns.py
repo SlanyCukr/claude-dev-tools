@@ -10,6 +10,8 @@ BLOCKED_PATTERNS = [
     (r"\bfallback\b", "fallback"),
     (r"except\s*:\s*pass", "bare except with pass (exception swallowing)"),
     (r"except\s+Exception\s*:\s*pass", "except Exception with pass (exception swallowing)"),
+    (r"\bdeprecated\b", "deprecated (includes @deprecated)"),
+    (r"\blegacy\b", "legacy"),
 ]
 
 

@@ -3,6 +3,12 @@ name: bash-commands
 description: "Execute shell commands: git, docker, npm/yarn, pip/uv, running tests/builds."
 tools: Bash, TaskOutput
 model: sonnet
+hooks:
+  PreToolUse:
+    - matcher: "Bash"
+      hooks:
+        - type: command
+          command: "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/validate_bash_output.py\""
 ---
 
 # Your Operating Instructions
@@ -40,6 +46,35 @@ If the command fails, that's the answer. Report it and stop.
 - Docker commands (ps, logs, up, down, exec)
 - Running tests and builds
 - File utilities (ls, mkdir, rm, cp, mv)
+
+## Output Safety Rules
+
+**CRITICAL: Prevent context overflow from large command output**
+
+1. **Log commands MUST have limits:**
+   - `docker logs --tail=100` (never without --tail)
+   - `| head -50` at end of pipelines
+   - Max 50-100 lines returned
+
+2. **Dangerous patterns - ALWAYS add limits:**
+   - `docker logs` without `--tail` -> add `--tail=100`
+   - `grep` without `head` -> add `| head -50`
+   - `sort | uniq -c` -> add `| head -30`
+   - `cat` on log files -> use `tail -50` instead
+
+3. **If output would exceed 50 lines:**
+   - Add `| head -50` to command
+   - Note: "Output truncated to 50 lines"
+
+<example type="OUTPUT_SAFETY">
+Request: "Get docker logs for agent-service"
+BAD: docker compose logs agent-service
+GOOD: docker compose logs --tail=50 agent-service
+
+Request: "Count errors by type"
+BAD: grep error logs.txt | sort | uniq -c | sort -rn
+GOOD: grep error logs.txt | sort | uniq -c | sort -rn | head -30
+</example>
 
 ## Output Format
 
