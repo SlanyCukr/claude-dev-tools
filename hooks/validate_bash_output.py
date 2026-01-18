@@ -76,11 +76,13 @@ def main():
 
     fixed = fix_command(command)
     if fixed != command:
-        # Output JSON to modify the command
+        # Output JSON to modify the command per Claude Code hooks API
         tool_input["command"] = fixed
         result = {
-            "decision": "modify",
-            "modifiedInput": tool_input,
+            "hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "updatedInput": tool_input,
+            }
         }
         print(json.dumps(result))
 
