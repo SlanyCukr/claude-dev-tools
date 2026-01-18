@@ -4,6 +4,16 @@
 import json
 import re
 import sys
+from datetime import datetime
+from pathlib import Path
+
+DEBUG_LOG = Path("/tmp/bash-hook-debug.log")
+
+
+def log_debug(msg: str) -> None:
+    """Write debug message to log file."""
+    with DEBUG_LOG.open("a") as f:
+        f.write(f"[{datetime.now().isoformat()}] {msg}\n")
 
 
 def add_tail_to_docker_logs(command: str) -> str:
@@ -66,25 +76,42 @@ def fix_command(command: str) -> str:
 
 
 def main():
+    log_debug("=== Hook invoked ===")
+
     try:
-        data = json.load(sys.stdin)
-    except json.JSONDecodeError:
+        raw_input = sys.stdin.read()
+        log_debug(f"Raw stdin: {raw_input[:500]}")
+        data = json.loads(raw_input)
+    except json.JSONDecodeError as e:
+        log_debug(f"JSON decode error: {e}")
         sys.exit(0)
+
+    log_debug(f"Parsed data keys: {list(data.keys())}")
 
     tool_input = data.get("tool_input", {})
     command = tool_input.get("command", "")
 
+    log_debug(f"Command: {command}")
+
     fixed = fix_command(command)
+    log_debug(f"Fixed command: {fixed}")
+    log_debug(f"Changed: {fixed != command}")
+
     if fixed != command:
         # Output JSON to modify the command per Claude Code hooks API
+        # Must include permissionDecision AND updatedInput
         tool_input["command"] = fixed
         result = {
             "hookSpecificOutput": {
-                "hookEventName": "PreToolUse",
+                "permissionDecision": "allow",
                 "updatedInput": tool_input,
             }
         }
-        print(json.dumps(result))
+        output = json.dumps(result)
+        log_debug(f"Output: {output}")
+        print(output)
+    else:
+        log_debug("No modification needed")
 
     sys.exit(0)
 

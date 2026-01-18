@@ -8,7 +8,7 @@ hooks:
     - matcher: "Bash"
       hooks:
         - type: command
-          command: "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/validate_bash_output.py\""
+          command: "python3 /home/slanycukr/.claude/plugins/cache/zai-speckit/zai-speckit-plugin/1.0.33/hooks/validate_bash_output.py"
 ---
 
 # Your Operating Instructions
