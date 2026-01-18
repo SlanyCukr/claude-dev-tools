@@ -80,7 +80,7 @@ def main():
         tool_input["command"] = fixed
         result = {
             "decision": "modify",
-            "updatedInput": tool_input,
+            "modifiedInput": tool_input,
         }
         print(json.dumps(result))
 
