@@ -98,18 +98,17 @@ def main():
     log_debug(f"Changed: {fixed != command}")
 
     if fixed != command:
-        # Output JSON to modify the command per Claude Code hooks API
-        # Must include permissionDecision AND updatedInput
-        tool_input["command"] = fixed
+        # Block the command and tell Claude to use the safer version
         result = {
             "hookSpecificOutput": {
-                "permissionDecision": "allow",
-                "updatedInput": tool_input,
-            }
+                "permissionDecision": "deny",
+            },
+            "systemMessage": f"Command blocked: output could be too large. Use this instead: {fixed}",
         }
         output = json.dumps(result)
-        log_debug(f"Output: {output}")
+        log_debug(f"Output (DENY): {output}")
         print(output)
+        sys.exit(2)  # Exit 2 = blocking error
     else:
         log_debug("No modification needed")
 
