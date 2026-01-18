@@ -37,7 +37,9 @@ def add_cut_to_docker_logs(command: str) -> str:
         return command
     if re.search(r"cut\s+-c", command, re.IGNORECASE):
         return command
-    # Append cut at the end
+    # Append cut at the end, only add 2>&1 if not already present
+    if re.search(r"2>&1", command):
+        return command.rstrip() + " | cut -c1-500"
     return command.rstrip() + " 2>&1 | cut -c1-500"
 
 
