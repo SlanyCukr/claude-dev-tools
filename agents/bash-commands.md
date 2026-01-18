@@ -3,6 +3,12 @@ name: bash-commands
 description: "Execute shell commands: git, docker, npm/yarn, pip/uv, running tests/builds."
 tools: Bash, TaskOutput
 model: sonnet
+hooks:
+  PreToolUse:
+    - matcher: "Bash"
+      hooks:
+        - type: command
+          command: "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/validate_bash_output.py\""
 ---
 
 # Your Operating Instructions
@@ -60,14 +66,24 @@ If the command fails, that's the answer. Report it and stop.
    - Add `| head -50` to command
    - Note: "Output truncated to 50 lines"
 
+4. **Truncate long lines (for JSON/structured logs):**
+   - Add `| cut -c1-500` after log commands
+   - Prevents single massive log lines from exploding context
+
 <example type="OUTPUT_SAFETY">
 Request: "Get docker logs for agent-service"
 BAD: docker compose logs agent-service
-GOOD: docker compose logs --tail=50 agent-service
+GOOD: docker compose logs --tail=50 agent-service 2>&1 | cut -c1-500
 
 Request: "Count errors by type"
 BAD: grep error logs.txt | sort | uniq -c | sort -rn
 GOOD: grep error logs.txt | sort | uniq -c | sort -rn | head -30
+</example>
+
+<example type="OUTPUT_SAFETY_CHARS">
+Request: "Check docker logs for errors"
+BAD: docker compose logs --tail=50 agent-service | grep error
+GOOD: docker compose logs --tail=50 agent-service 2>&1 | grep error | cut -c1-500
 </example>
 
 ## Output Format
