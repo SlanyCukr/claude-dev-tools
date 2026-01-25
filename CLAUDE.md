@@ -30,10 +30,16 @@ zai-speckit-plugin/
 │   ├── refactor-cleaner.md     # NEW
 │   └── architect.md            # NEW
 ├── commands/             # Slash commands
+│   ├── feature.md        # /feature - New feature workflow
+│   ├── bugfix.md         # /bugfix - Bug investigation workflow
+│   ├── cleanup.md        # /cleanup - Dead code removal workflow
+│   ├── perf.md           # /perf - Performance investigation
+│   ├── integrate.md      # /integrate - Library integration
+│   ├── audit.md          # /audit - Security audit workflow
 │   ├── tdd.md            # /tdd - Test-driven development
 │   ├── e2e.md            # /e2e - End-to-end tests
 │   ├── security.md       # /security - Security review
-│   ├── refactor.md       # /refactor - Dead code cleanup
+│   ├── refactor.md       # /refactor - Dead code analysis
 │   └── build-fix.md      # /build-fix - Fix build errors
 ├── rules/                # Always-on guidelines
 │   ├── security.md       # Security best practices
@@ -92,13 +98,26 @@ Each agent is a Markdown file with:
 
 ## Commands System
 
-Slash commands invoke specialized agents:
+Slash commands invoke specialized agents or multi-agent workflows:
+
+### Workflow Commands (Multi-Agent)
+
+| Command | Workflow | Purpose |
+|---------|----------|---------|
+| /feature | architect → explore → tdd → build → review | New feature development |
+| /bugfix | root-cause → explore → tdd → build → review | Bug investigation and fix |
+| /cleanup | refactor → explore → build → review | Dead code removal |
+| /perf | explore → root-cause → architect → build | Performance optimization |
+| /integrate | docs → research → architect → build → tdd | Library integration |
+| /audit | security → explore → build → security | Full security audit |
+
+### Single-Agent Commands
 
 | Command | Agent | Purpose |
 |---------|-------|---------|
-| /tdd | tdd-guide | Test-driven development workflow |
+| /tdd | tdd-guide | Test-driven development |
 | /e2e | e2e-runner | Playwright test generation |
-| /security | security-reviewer | Security review on demand |
+| /security | security-reviewer | Quick security review |
 | /refactor | refactor-cleaner | Dead code analysis |
 | /build-fix | root-cause-agent | Build error resolution |
 

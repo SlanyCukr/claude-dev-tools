@@ -56,11 +56,24 @@ This plugin implements a delegation-first workflow where Claude orchestrates whi
 
 ### Commands
 
-| Command | Invokes | Purpose |
-|---------|---------|---------|
-| `/tdd` | tdd-guide | Test-driven development workflow |
+#### Workflow Commands (Multi-Agent)
+
+| Command | Workflow | Purpose |
+|---------|----------|---------|
+| `/feature` | architect → explore → tdd → build → review | New feature development |
+| `/bugfix` | root-cause → explore → tdd → build → review | Bug investigation and fix |
+| `/cleanup` | refactor → explore → build → review | Dead code removal |
+| `/perf` | explore → root-cause → architect → build | Performance optimization |
+| `/integrate` | docs → research → architect → build → tdd | Library integration |
+| `/audit` | security → explore → build → security | Full security audit |
+
+#### Single-Agent Commands
+
+| Command | Agent | Purpose |
+|---------|-------|---------|
+| `/tdd` | tdd-guide | Test-driven development |
 | `/e2e` | e2e-runner | Playwright test generation |
-| `/security` | security-reviewer | Security review on demand |
+| `/security` | security-reviewer | Quick security review |
 | `/refactor` | refactor-cleaner | Dead code analysis |
 | `/build-fix` | root-cause-agent | Build error resolution |
 
