@@ -54,33 +54,15 @@ This plugin implements a delegation-first workflow where Claude orchestrates whi
 | `chrome-devtools` | Browser automation | sonnet |
 | `bash-commands` | Git, npm, system commands | sonnet |
 
-### Commands
-
-#### Workflow Commands (Multi-Agent)
-
-| Command | Workflow | Purpose |
-|---------|----------|---------|
-| `/feature` | architect → explore → tdd → build → review | New feature development |
-| `/bugfix` | root-cause → explore → tdd → build → review | Bug investigation and fix |
-| `/cleanup` | refactor → explore → build → review | Dead code removal |
-| `/perf` | explore → root-cause → architect → build | Performance optimization |
-| `/integrate` | docs → research → architect → build → tdd | Library integration |
-| `/audit` | security → explore → build → security | Full security audit |
-
-#### Single-Agent Commands
-
-| Command | Agent | Purpose |
-|---------|-------|---------|
-| `/tdd` | tdd-guide | Test-driven development |
-| `/e2e` | e2e-runner | Playwright test generation |
-| `/security` | security-reviewer | Quick security review |
-| `/refactor` | refactor-cleaner | Dead code analysis |
-| `/build-fix` | root-cause-agent | Build error resolution |
-
-#### Help
+### Commands (6 Total)
 
 | Command | Purpose |
 |---------|---------|
+| `/feature` | Build something new |
+| `/bugfix` | Fix problems (bugs, build errors, performance) |
+| `/test` | Add tests (TDD or E2E based on context) |
+| `/security` | Security review or full audit |
+| `/refactor` | Dead code cleanup |
 | `/help` | Quick reference with decision tree |
 
 ### Hooks

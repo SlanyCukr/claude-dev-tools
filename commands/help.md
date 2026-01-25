@@ -1,81 +1,65 @@
 ---
-description: Quick reference for all available commands
+description: Quick reference for all commands
 ---
 
 # /help
 
-## Quick Reference
+## Commands
 
-**What do you want to do?**
-
-### Build Something New
-```
-/feature <description>     Full workflow: design → test → build → review
-/integrate <library>       Add a new library or service
-```
-
-### Fix Something Broken
-```
-/bugfix <problem>          Investigate and fix with regression test
-/build-fix                 Fix TypeScript/build errors one by one
-```
-
-### Improve Code Quality
-```
-/cleanup [path]            Find and remove dead code
-/refactor                  Analyze dead code (no removal)
-/security <file/scope>     Quick security review
-/audit <scope>             Full security audit with fixes
-```
-
-### Add Tests
-```
-/tdd <feature>             Write tests first, then implement
-/e2e <flow>                Generate Playwright E2E tests
-```
-
-### Investigate Performance
-```
-/perf <problem>            Profile, diagnose, optimize
-```
+| Command | Purpose |
+|---------|---------|
+| `/feature` | Build something new |
+| `/bugfix` | Fix problems (bugs, build errors, perf) |
+| `/test` | Add tests (TDD or E2E) |
+| `/security` | Security review or full audit |
+| `/refactor` | Remove dead code |
+| `/help` | This reference |
 
 ## Decision Tree
 
 ```
-Is it a new feature?
-├─ Yes → /feature
-└─ No
-   Is something broken?
-   ├─ Build errors → /build-fix
-   ├─ Runtime bug → /bugfix
-   └─ No
-      Is it about quality?
-      ├─ Dead code → /cleanup
-      ├─ Security → /audit or /security
-      ├─ Need tests → /tdd or /e2e
-      └─ Performance → /perf
+What do you need?
+
+Build something new?
+└─ /feature
+
+Fix a problem?
+└─ /bugfix (bugs, build errors, performance)
+
+Add tests?
+└─ /test (detects TDD vs E2E from context)
+
+Security review?
+└─ /security (depth based on scope)
+
+Remove dead code?
+└─ /refactor
 ```
-
-## Command Complexity
-
-| Simple (1 agent) | Workflow (multi-agent) |
-|------------------|------------------------|
-| /security | /audit |
-| /refactor | /cleanup |
-| /tdd | /feature |
-| /e2e | /bugfix |
-| /build-fix | /perf |
-| | /integrate |
 
 ## Examples
 
 ```
-/feature Add dark mode toggle to settings
-/bugfix API returns 500 when user has no profile
-/cleanup src/legacy/ - remove deprecated helpers
-/integrate Sentry for error tracking
-/perf Homepage takes 8 seconds to load
-/audit Check payment flow before launch
-/tdd Add validation for email field
-/e2e Test the complete checkout flow
+/feature Add user authentication with JWT
+/feature Implement dark mode toggle
+
+/bugfix Users report 500 on checkout
+/bugfix Build failing with type errors
+/bugfix API response takes 5 seconds
+
+/test Add validation tests for email
+/test E2E test for checkout flow
+
+/security src/auth/login.ts
+/security Full audit before deploy
+
+/refactor Clean up src/legacy/
+/refactor Remove unused dependencies
 ```
+
+## Quick Tips
+
+- `/feature` for new functionality
+- `/bugfix` for anything broken
+- `/test` figures out TDD vs E2E automatically
+- `/security` with "full audit" for comprehensive review
+- `/refactor` to clean up after major changes

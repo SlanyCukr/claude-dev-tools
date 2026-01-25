@@ -1,56 +1,73 @@
 ---
-description: Clean up dead code, unused dependencies, and duplicate code. Uses knip, depcheck, and ts-prune for analysis.
+description: Dead code cleanup - find, verify, and safely remove unused code
 ---
 
 # /refactor
 
-Invokes the **refactor-cleaner** agent to identify and remove dead code.
+Find and remove dead code, unused dependencies, and duplicates.
 
-## What This Command Does
+## Usage
 
-1. **Dead Code Detection** - Find unused exports, files, dependencies
-2. **Duplicate Elimination** - Consolidate similar code
-3. **Dependency Cleanup** - Remove unused packages
-4. **Safe Removal** - Verify before deleting
-5. **Documentation** - Track all deletions
+```
+/refactor src/utils/ - clean up unused exports
+/refactor Find dead code across the project
+/refactor Remove deprecated API endpoints
+/refactor Clean up after removing the legacy auth system
+```
 
-## When to Use
+## Workflow
 
-Use `/refactor` when:
-- After major feature completion
-- During scheduled cleanup sprints
-- When bundle size is too large
-- Before major version releases
-- When test coverage is good (safety net)
+```
+1. refactor-cleaner → Find dead code (knip, depcheck, ts-prune)
+2. codebase-explorer → Verify nothing depends on candidates
+3. build-agent      → Remove dead code safely
+4. code-reviewer    → Verify no regressions
+```
+
+## What Gets Found
+
+- Unused exports
+- Unused files
+- Unused dependencies (npm packages)
+- Duplicate/similar code
+- Dead code paths
+- Commented-out code
 
 ## Analysis Tools
 
 ```bash
-# Run knip for unused exports/files/dependencies
+# Unused exports, files, dependencies
 npx knip
 
-# Check unused dependencies
+# Unused npm dependencies
 npx depcheck
 
-# Find unused TypeScript exports
+# Unused TypeScript exports
 npx ts-prune
 ```
 
-## Safety Checklist
+## Safety Process
 
-Before removing ANYTHING:
-- [ ] Run detection tools
-- [ ] Grep for all references
-- [ ] Check dynamic imports
-- [ ] Run all tests
-- [ ] Create backup branch
+1. **Detect** - Run analysis tools
+2. **Verify** - Grep for dynamic references
+3. **Test** - Ensure tests pass
+4. **Remove** - Clean deletion (no commenting out)
+5. **Log** - Document what was removed
+
+## When to Use
+
+- After completing a major feature
+- During cleanup sprints
+- When bundle size is too large
+- Before major version releases
+- When test coverage provides safety net
 
 ## When NOT to Use
 
 - During active feature development
 - Right before production deployment
 - When codebase is unstable
-- Without proper test coverage
+- Without proper test coverage (risky)
 
 ## Related
 

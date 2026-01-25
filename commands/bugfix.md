@@ -1,54 +1,73 @@
 ---
-description: Bug investigation and fix workflow - diagnose, test, fix, review
+description: Fix problems - bugs, build errors, performance issues
 ---
 
 # /bugfix
 
-Systematic bug investigation and fix using evidence-based diagnosis.
-
-## Workflow
-
-```
-1. root-cause-agent → Diagnose with logs/traces/code
-2. codebase-explorer → Find related code and dependencies
-3. tdd-guide        → Write regression test first
-4. build-agent      → Fix the bug
-5. code-reviewer    → Verify fix quality
-```
+Fix any kind of problem: runtime bugs, build errors, or performance issues.
 
 ## Usage
 
 ```
 /bugfix Users report 500 errors on checkout
-/bugfix Login fails intermittently with timeout
-/bugfix Memory usage grows over time in worker process
+/bugfix TypeScript build failing with 15 errors
+/bugfix Dashboard loads in 8 seconds, should be < 2s
+/bugfix Memory usage grows unbounded in worker
 ```
 
-## What Happens
+## Workflow
 
-1. **Root Cause Agent** analyzes evidence (logs, traces, git history) and forms hypotheses
-2. **Codebase Explorer** finds related code paths and dependencies
-3. **TDD Guide** writes a failing test that reproduces the bug
-4. **Build Agent** implements the fix
-5. **Code Reviewer** verifies the fix doesn't introduce new issues
+```
+1. root-cause-agent → Diagnose with evidence
+2. codebase-explorer → Find related code
+3. tdd-guide        → Write regression test
+4. build-agent      → Implement fix
+5. code-reviewer    → Verify quality
+```
+
+## Problem Types
+
+| Type | Approach |
+|------|----------|
+| Runtime bug | Analyze logs/traces, form hypotheses |
+| Build error | Parse errors, fix one at a time, verify |
+| Performance | Profile, identify bottleneck, optimize |
 
 ## Providing Context
 
-Include as much context as possible:
+Include as much as possible:
 - Error messages or stack traces
 - When it started happening
-- What changed recently (deploys, config changes)
+- What changed recently
 - Steps to reproduce
 - Affected files or endpoints
+
+For **performance issues**, also include:
+- Current vs expected timing
+- Profiler output if available
+- Query execution plans
+
+For **build errors**, include:
+- Full error output
+- Recent changes to types/deps
+
+## What Happens
+
+1. **Root Cause Agent** analyzes evidence and forms hypotheses with confidence levels
+2. **Codebase Explorer** maps related code paths and dependencies
+3. **TDD Guide** writes a failing test that reproduces the issue
+4. **Build Agent** implements the fix
+5. **Code Reviewer** verifies no regressions
 
 ## When to Use
 
 - Production errors or failures
+- Build/type errors blocking development
+- Performance regressions
 - Failing tests you don't understand
 - Intermittent/flaky issues
-- Performance regressions
 
 ## When NOT to Use
 
-- You already know the fix (just use build-agent)
-- It's a new feature, not a bug (use `/feature`)
+- You already know the fix (just use build-agent directly)
+- It's a new feature (use `/feature`)

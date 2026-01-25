@@ -29,18 +29,13 @@ zai-speckit-plugin/
 │   ├── e2e-runner.md           # NEW
 │   ├── refactor-cleaner.md     # NEW
 │   └── architect.md            # NEW
-├── commands/             # Slash commands
-│   ├── feature.md        # /feature - New feature workflow
-│   ├── bugfix.md         # /bugfix - Bug investigation workflow
-│   ├── cleanup.md        # /cleanup - Dead code removal workflow
-│   ├── perf.md           # /perf - Performance investigation
-│   ├── integrate.md      # /integrate - Library integration
-│   ├── audit.md          # /audit - Security audit workflow
-│   ├── tdd.md            # /tdd - Test-driven development
-│   ├── e2e.md            # /e2e - End-to-end tests
-│   ├── security.md       # /security - Security review
-│   ├── refactor.md       # /refactor - Dead code analysis
-│   └── build-fix.md      # /build-fix - Fix build errors
+├── commands/             # Slash commands (6 total)
+│   ├── feature.md        # /feature - Build something new
+│   ├── bugfix.md         # /bugfix - Fix problems (bugs, build, perf)
+│   ├── test.md           # /test - Add tests (TDD or E2E)
+│   ├── security.md       # /security - Security review or audit
+│   ├── refactor.md       # /refactor - Dead code cleanup
+│   └── help.md           # /help - Quick reference
 ├── rules/                # Always-on guidelines
 │   ├── security.md       # Security best practices
 │   ├── testing.md        # Testing requirements
@@ -98,34 +93,16 @@ Each agent is a Markdown file with:
 
 ## Commands System
 
-Slash commands invoke specialized agents or multi-agent workflows:
+Six commands covering all common workflows:
 
-### Workflow Commands (Multi-Agent)
-
-| Command | Workflow | Purpose |
-|---------|----------|---------|
-| /feature | architect → explore → tdd → build → review | New feature development |
-| /bugfix | root-cause → explore → tdd → build → review | Bug investigation and fix |
-| /cleanup | refactor → explore → build → review | Dead code removal |
-| /perf | explore → root-cause → architect → build | Performance optimization |
-| /integrate | docs → research → architect → build → tdd | Library integration |
-| /audit | security → explore → build → security | Full security audit |
-
-### Single-Agent Commands
-
-| Command | Agent | Purpose |
-|---------|-------|---------|
-| /tdd | tdd-guide | Test-driven development |
-| /e2e | e2e-runner | Playwright test generation |
-| /security | security-reviewer | Quick security review |
-| /refactor | refactor-cleaner | Dead code analysis |
-| /build-fix | root-cause-agent | Build error resolution |
-
-### Help
-
-| Command | Purpose |
-|---------|---------|
-| /help | Quick reference for all commands with decision tree |
+| Command | Purpose | Workflow |
+|---------|---------|----------|
+| /feature | Build something new | architect → explore → tdd → build → review |
+| /bugfix | Fix problems (bugs, build errors, perf) | root-cause → explore → tdd → build → review |
+| /test | Add tests (TDD or E2E) | explore → tdd-guide or e2e-runner → review |
+| /security | Security review or full audit | security-reviewer (+ explore → build if audit) |
+| /refactor | Dead code cleanup | refactor-cleaner → explore → build → review |
+| /help | Quick reference | - |
 
 ## Rules System
 

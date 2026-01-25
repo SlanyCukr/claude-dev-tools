@@ -1,50 +1,78 @@
 ---
-description: Run security review on code. Checks for OWASP Top 10 vulnerabilities, hardcoded secrets, injection flaws, and authentication issues.
+description: Security review - quick check or full audit with fixes
 ---
 
 # /security
 
-Invokes the **security-reviewer** agent to perform a security audit.
+Security review ranging from quick file check to full audit with fixes.
 
-## What This Command Does
+## Usage
 
-1. **Vulnerability Detection** - OWASP Top 10 issues
-2. **Secrets Scanning** - Hardcoded API keys, passwords, tokens
-3. **Input Validation** - SQL injection, XSS, command injection
-4. **Auth/Authz Review** - Broken authentication, missing authorization
-5. **Dependency Audit** - Known vulnerable packages
+```
+/security src/auth/login.ts
+/security Review the payment processing flow
+/security Full audit before production deploy
+/security Check API endpoints for injection
+```
 
-## When to Use
+## Scope Determines Depth
 
-Use `/security` when:
-- New API endpoints added
-- Authentication/authorization code changed
-- User input handling added
-- Database queries modified
-- File upload features added
-- Payment/financial code changed
-- External API integrations added
-- Dependencies updated
-- Before major releases
+| Scope | What Happens |
+|-------|--------------|
+| Single file | Quick review, report issues |
+| Directory/flow | Thorough review, map entry points |
+| "Full audit" | Complete OWASP scan + fixes + verification |
+
+## Quick Review Workflow
+
+```
+1. security-reviewer → Scan for vulnerabilities
+```
+
+## Full Audit Workflow
+
+```
+1. security-reviewer → Full OWASP audit
+2. codebase-explorer → Map all input entry points
+3. build-agent      → Fix vulnerabilities
+4. security-reviewer → Verify fixes
+```
+
+## What Gets Checked
+
+**OWASP Top 10:**
+- Injection (SQL, NoSQL, command, LDAP)
+- Broken authentication
+- Sensitive data exposure
+- XXE (XML external entities)
+- Broken access control
+- Security misconfiguration
+- XSS (cross-site scripting)
+- Insecure deserialization
+- Vulnerable components
+- Insufficient logging
+
+**Additional Checks:**
+- Hardcoded secrets (API keys, passwords)
+- Missing input validation
+- CSRF protection
+- Rate limiting
+- Auth/authz bypasses
 
 ## Severity Levels
 
-- **CRITICAL** - Fix immediately (hardcoded secrets, SQL injection, auth bypass)
-- **HIGH** - Fix before production (XSS, SSRF, missing auth checks)
-- **MEDIUM** - Fix when possible (logging sensitive data, missing rate limiting)
+- **CRITICAL** - Fix immediately (secrets, SQL injection, auth bypass)
+- **HIGH** - Fix before production (XSS, SSRF, missing auth)
+- **MEDIUM** - Fix when possible (logging PII, missing rate limits)
 
-## Security Tools
+## When to Use
 
-```bash
-# Check for vulnerable dependencies
-npm audit
-
-# Check for secrets in files
-grep -r "api[_-]?key\|password\|secret" --include="*.ts" .
-
-# Scan for hardcoded secrets
-npx trufflehog filesystem . --json
-```
+- Before production deployment
+- After adding auth/authz code
+- When handling user input
+- After adding payment/financial code
+- When integrating external APIs
+- Regular security reviews
 
 ## Related
 
