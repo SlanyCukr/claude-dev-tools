@@ -121,6 +121,12 @@ Slash commands invoke specialized agents or multi-agent workflows:
 | /refactor | refactor-cleaner | Dead code analysis |
 | /build-fix | root-cause-agent | Build error resolution |
 
+### Help
+
+| Command | Purpose |
+|---------|---------|
+| /help | Quick reference for all commands with decision tree |
+
 ## Rules System
 
 Always-on guidelines that apply to all development:

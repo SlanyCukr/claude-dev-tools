@@ -77,6 +77,12 @@ This plugin implements a delegation-first workflow where Claude orchestrates whi
 | `/refactor` | refactor-cleaner | Dead code analysis |
 | `/build-fix` | root-cause-agent | Build error resolution |
 
+#### Help
+
+| Command | Purpose |
+|---------|---------|
+| `/help` | Quick reference with decision tree |
+
 ### Hooks
 
 | Event | Hook | Purpose |
