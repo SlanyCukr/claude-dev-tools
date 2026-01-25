@@ -42,10 +42,7 @@ zai-speckit-plugin/
 ├── hooks/                # Event-driven automation
 │   ├── hooks.json        # Hook configuration
 │   ├── block_antipatterns.py
-│   ├── speckit_subagent_context.py
-│   ├── bash_output_monitor.py
-│   ├── honesty_validator.py
-│   ├── session_start_context.py
+│   ├── validate_bash_output.py
 │   ├── lib/              # Hook utilities
 │   │   └── utils.js
 │   └── scripts/          # Node.js hook implementations
@@ -121,8 +118,10 @@ Hooks intercept Claude Code lifecycle events:
 
 | Event | Hook | Purpose |
 |-------|------|---------|
-| PreToolUse | block_antipatterns.py | Block backward compat, fallbacks, exception swallowing |
-| PostToolUse | console-log-warning.js | Warn about console.log in edits |
+| PreToolUse (Edit) | block_antipatterns.py | Block backward compat, fallbacks |
+| PreToolUse (Bash) | validate_bash_output.py | Validate bash command safety |
+| PreToolUse (*) | suggest-compact.js | Suggest compaction after many tool calls |
+| PostToolUse (Edit) | console-log-warning.js | Warn about console.log |
 | SessionStart | session-start.js | Load previous context |
 | SessionEnd | session-end.js | Persist session state |
 | PreCompact | pre-compact.js | Save state before compaction |
@@ -167,6 +166,12 @@ When editing agent prompts in `agents/`:
 - Keep markdown output format
 - Update examples when changing behavior
 - Test with representative tasks
+
+## Skills System
+
+Skills referenced in agent frontmatter (e.g., `backend-testing`, `react-query-patterns`)
+are external skills provided by Claude Code or other plugins. They are invoked via
+the `Skill` tool when the agent needs specialized knowledge.
 
 ## Adding New Hooks
 

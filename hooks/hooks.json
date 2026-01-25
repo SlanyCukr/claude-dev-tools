@@ -19,6 +19,15 @@
             "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/validate_bash_output.py\""
           }
         ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/suggest-compact.js\""
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [],
