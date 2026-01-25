@@ -13,7 +13,7 @@ zai-speckit-plugin/
 ├── .claude-plugin/       # Plugin metadata
 │   ├── plugin.json       # Name, version, description
 │   └── marketplace.json  # Marketplace integration config
-├── agents/               # Subagent definitions (10 agents)
+├── agents/               # Subagent definitions (15 agents)
 │   ├── build-agent.md
 │   ├── python-build-agent.md
 │   ├── react-nextjs-agent.md
@@ -23,14 +23,37 @@ zai-speckit-plugin/
 │   ├── context7-docs.md
 │   ├── web-research.md
 │   ├── chrome-devtools.md
-│   └── bash-commands.md
+│   ├── bash-commands.md
+│   ├── security-reviewer.md    # NEW
+│   ├── tdd-guide.md            # NEW
+│   ├── e2e-runner.md           # NEW
+│   ├── refactor-cleaner.md     # NEW
+│   └── architect.md            # NEW
+├── commands/             # Slash commands
+│   ├── tdd.md            # /tdd - Test-driven development
+│   ├── e2e.md            # /e2e - End-to-end tests
+│   ├── security.md       # /security - Security review
+│   ├── refactor.md       # /refactor - Dead code cleanup
+│   └── build-fix.md      # /build-fix - Fix build errors
+├── rules/                # Always-on guidelines
+│   ├── security.md       # Security best practices
+│   ├── testing.md        # Testing requirements
+│   └── git-workflow.md   # Git workflow standards
 ├── hooks/                # Event-driven automation
-│   ├── hooks.toml        # Hook configuration
+│   ├── hooks.json        # Hook configuration
 │   ├── block_antipatterns.py
 │   ├── speckit_subagent_context.py
 │   ├── bash_output_monitor.py
 │   ├── honesty_validator.py
-│   └── session_start_context.py
+│   ├── session_start_context.py
+│   ├── lib/              # Hook utilities
+│   │   └── utils.js
+│   └── scripts/          # Node.js hook implementations
+│       ├── session-start.js
+│       ├── session-end.js
+│       ├── suggest-compact.js
+│       ├── pre-compact.js
+│       └── console-log-warning.js
 ├── lib/                  # Supporting libraries
 │   └── toon.py           # TOON parser
 ├── scripts/              # Utility scripts
@@ -50,36 +73,47 @@ zai-speckit-plugin/
 | react-nextjs-agent | opus | React/Next.js with TanStack Query |
 | code-reviewer | opus | Code quality (80% confidence threshold) |
 | root-cause-agent | opus | Failure diagnosis |
+| security-reviewer | opus | OWASP Top 10, secrets, vulnerabilities |
+| tdd-guide | opus | TDD workflow, 80% coverage |
+| e2e-runner | opus | Playwright E2E tests |
+| refactor-cleaner | opus | Dead code elimination |
+| architect | opus | System design, ADRs |
 | codebase-explorer | sonnet | Fast codebase search |
 | context7-docs | sonnet | Library documentation lookup |
 | web-research | sonnet | Web search for docs |
 | chrome-devtools | sonnet | Browser automation |
-| bash-commands | haiku | Git, npm, system commands |
+| bash-commands | sonnet | Git, npm, system commands |
 
 ### Agent File Format
 
 Each agent is a Markdown file with:
 1. **YAML frontmatter**: name, description, model, tools, skills
-2. **Output rules**: TOON format specification
-3. **Instruction hierarchy**: Priority of instructions
-4. **Workflow phases**: Assess → Act pattern
-5. **BAIL conditions**: When to return early
-6. **Examples**: Concrete input/output demonstrations
+2. **Core workflow**: Step-by-step process
+3. **When to return early**: Scope limits and bail conditions
+4. **Quality standards**: Domain-specific best practices
+5. **Output format**: Markdown structure for results
 
-### TOON Output Format
+## Commands System
 
-All agents return a single line:
-```
-TOON: /tmp/zai-speckit/toon/{unique-id}.toon
-```
+Slash commands invoke specialized agents:
 
-TOON file contains structured results:
-```toon
-status: done | partial | failed | bail
-task: {description}
-files[N]: file1.py,file2.py
-notes: {blockers or suggestions}
-```
+| Command | Agent | Purpose |
+|---------|-------|---------|
+| /tdd | tdd-guide | Test-driven development workflow |
+| /e2e | e2e-runner | Playwright test generation |
+| /security | security-reviewer | Security review on demand |
+| /refactor | refactor-cleaner | Dead code analysis |
+| /build-fix | root-cause-agent | Build error resolution |
+
+## Rules System
+
+Always-on guidelines that apply to all development:
+
+| Rule File | Enforces |
+|-----------|----------|
+| security.md | No hardcoded secrets, input validation, CSRF |
+| testing.md | 80% coverage, TDD for critical code |
+| git-workflow.md | Commit format, PR standards |
 
 ## Hooks System
 
@@ -88,10 +122,10 @@ Hooks intercept Claude Code lifecycle events:
 | Event | Hook | Purpose |
 |-------|------|---------|
 | PreToolUse | block_antipatterns.py | Block backward compat, fallbacks, exception swallowing |
-| UserPromptSubmit | speckit_subagent_context.py | Inject subagent guidance for speckit commands |
-| PostToolUse | bash_output_monitor.py | Token efficiency reminder (>30 lines) |
-| SubagentStop | honesty_validator.py | Validate "Honesty Over Completion" |
-| SessionStart | session_start_context.py | Inject subagent usage reminders |
+| PostToolUse | console-log-warning.js | Warn about console.log in edits |
+| SessionStart | session-start.js | Load previous context |
+| SessionEnd | session-end.js | Persist session state |
+| PreCompact | pre-compact.js | Save state before compaction |
 
 ## Speckit Integration
 
@@ -110,19 +144,32 @@ Maps speckit commands to recommended agents:
 1. **Delegation First**: Main session orchestrates, subagents execute
 2. **Small Chunks**: ONE focused task per agent call
 3. **Honesty Over Completion**: Partial work with clear reporting > fake completion
-4. **Early Bail Pattern**: Return early if task unclear/too broad
+4. **Proactive Quality**: Use security-reviewer, code-reviewer, tdd-guide without being asked
+5. **Test-Driven**: Write tests first, implement second
+
+## Agent Orchestration
+
+Use agents proactively based on triggers:
+
+| Trigger | Agent | Why |
+|---------|-------|-----|
+| Complex feature request | architect | Break down implementation |
+| Code just written/modified | code-reviewer | Quality check |
+| Bug fix or new feature | tdd-guide | Tests first |
+| Architectural decision | architect | System design |
+| Security-sensitive code | security-reviewer | Vulnerability check |
+| Build/type errors | root-cause-agent | Diagnosis |
 
 ## Modifying Agents
 
 When editing agent prompts in `agents/`:
 - Preserve YAML frontmatter structure
-- Keep `<output_rules>` XML section
-- Maintain instruction hierarchy
+- Keep markdown output format
 - Update examples when changing behavior
 - Test with representative tasks
 
 ## Adding New Hooks
 
-1. Add Python script to `hooks/`
-2. Register in `hooks/hooks.toml`
-3. Use appropriate event: PreToolUse, PostToolUse, UserPromptSubmit, SubagentStop, SessionStart
+1. Add script to `hooks/scripts/` (Node.js) or `hooks/` (Python)
+2. Register in `hooks/hooks.json`
+3. Use appropriate event: PreToolUse, PostToolUse, SessionStart, SessionEnd, PreCompact
