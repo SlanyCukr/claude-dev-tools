@@ -2,59 +2,47 @@
 /**
  * Strategic Compact Suggester
  *
- * Cross-platform (Windows, macOS, Linux)
- *
- * Runs on PreToolUse or periodically to suggest manual compaction at logical intervals
- *
- * Why manual over auto-compact:
- * - Auto-compact happens at arbitrary points, often mid-task
- * - Strategic compacting preserves context through logical phases
- * - Compact after exploration, before execution
- * - Compact after completing a milestone, before starting next
+ * Suggests manual compaction at logical intervals to preserve context.
+ * Outputs JSON to stdout with systemMessage to show suggestion while allowing tool call.
  */
 
 const path = require('path');
+const os = require('os');
 const fs = require('fs');
-const {
-  getTempDir,
-  readFile,
-  writeFile,
-  log
-} = require('../lib/utils');
 
-async function main() {
-  // Track tool call count (increment in a temp file)
-  // Use a session-specific counter file based on PID from parent process
-  // or session ID from environment
+function main() {
   const sessionId = process.env.CLAUDE_SESSION_ID || process.ppid || 'default';
-  const counterFile = path.join(getTempDir(), `claude-tool-count-${sessionId}`);
+  const counterFile = path.join(os.tmpdir(), `claude-tool-count-${sessionId}`);
   const threshold = parseInt(process.env.COMPACT_THRESHOLD || '50', 10);
 
   let count = 1;
 
-  // Read existing count or start at 1
-  const existing = readFile(counterFile);
-  if (existing) {
+  // Read existing count
+  try {
+    const existing = fs.readFileSync(counterFile, 'utf-8');
     count = parseInt(existing.trim(), 10) + 1;
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err;
   }
 
   // Save updated count
-  writeFile(counterFile, String(count));
+  fs.writeFileSync(counterFile, String(count));
 
-  // Suggest compact after threshold tool calls
+  // Output system message at threshold points
+  let message = null;
+
   if (count === threshold) {
-    log(`[StrategicCompact] ${threshold} tool calls reached - consider /compact if transitioning phases`);
+    message = `📊 ${threshold} tool calls - consider /compact if transitioning between phases`;
+  } else if (count > threshold && count % 25 === 0) {
+    message = `📊 ${count} tool calls - good checkpoint for /compact if context feels stale`;
   }
 
-  // Suggest at regular intervals after threshold
-  if (count > threshold && count % 25 === 0) {
-    log(`[StrategicCompact] ${count} tool calls - good checkpoint for /compact if context is stale`);
+  if (message) {
+    // Output JSON to stdout - Claude will see systemMessage
+    console.log(JSON.stringify({ systemMessage: message }));
   }
 
   process.exit(0);
 }
 
-main().catch(err => {
-  console.error('[StrategicCompact] Error:', err.message);
-  process.exit(0);
-});
+main();
