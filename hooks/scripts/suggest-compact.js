@@ -38,8 +38,9 @@ function main() {
   }
 
   if (message) {
-    // Output JSON to stdout with additionalContext so Claude sees it
+    // Both fields: additionalContext for Claude, systemMessage for user
     console.log(JSON.stringify({
+      systemMessage: message,
       hookSpecificOutput: {
         additionalContext: message
       }
