@@ -38,8 +38,12 @@ function main() {
   }
 
   if (message) {
-    // Output JSON to stdout - Claude will see systemMessage
-    console.log(JSON.stringify({ systemMessage: message }));
+    // Output JSON to stdout with additionalContext so Claude sees it
+    console.log(JSON.stringify({
+      hookSpecificOutput: {
+        additionalContext: message
+      }
+    }));
   }
 
   process.exit(0);
