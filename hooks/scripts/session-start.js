@@ -2,10 +2,8 @@
 /**
  * SessionStart Hook - Load previous context on new session
  *
- * Cross-platform (Windows, macOS, Linux)
- *
- * Runs when a new Claude session starts. Checks for recent session
- * files and notifies Claude of available context to load.
+ * For SessionStart, stdout is added to Claude's context.
+ * Checks for recent sessions and learned skills.
  */
 
 const path = require('path');
@@ -13,38 +11,36 @@ const {
   getSessionsDir,
   getLearnedSkillsDir,
   findFiles,
-  ensureDir,
-  log
+  ensureDir
 } = require('../lib/utils');
 
-async function main() {
+function main() {
   const sessionsDir = getSessionsDir();
   const learnedDir = getLearnedSkillsDir();
 
-  // Ensure directories exist
   ensureDir(sessionsDir);
   ensureDir(learnedDir);
 
+  const messages = [];
+
   // Check for recent session files (last 7 days)
   const recentSessions = findFiles(sessionsDir, '*.tmp', { maxAge: 7 });
-
   if (recentSessions.length > 0) {
-    const latest = recentSessions[0];
-    log(`[SessionStart] Found ${recentSessions.length} recent session(s)`);
-    log(`[SessionStart] Latest: ${latest.path}`);
+    messages.push(`Found ${recentSessions.length} recent session(s). Latest: ${recentSessions[0].path}`);
   }
 
   // Check for learned skills
   const learnedSkills = findFiles(learnedDir, '*.md');
-
   if (learnedSkills.length > 0) {
-    log(`[SessionStart] ${learnedSkills.length} learned skill(s) available in ${learnedDir}`);
+    messages.push(`${learnedSkills.length} learned skill(s) available in ${learnedDir}`);
+  }
+
+  // Output to stdout - gets added to Claude's context for SessionStart
+  if (messages.length > 0) {
+    console.log('[SessionStart] ' + messages.join('. '));
   }
 
   process.exit(0);
 }
 
-main().catch(err => {
-  console.error('[SessionStart] Error:', err.message);
-  process.exit(0); // Don't block on errors
-});
+main();

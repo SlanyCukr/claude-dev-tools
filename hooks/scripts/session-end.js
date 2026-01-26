@@ -1,11 +1,9 @@
 #!/usr/bin/env node
 /**
- * Stop Hook (Session End) - Persist learnings when session ends
+ * SessionEnd Hook - Persist session state when session ends
  *
- * Cross-platform (Windows, macOS, Linux)
- *
- * Runs when Claude session ends. Creates/updates session log file
- * with timestamp for continuity tracking.
+ * Creates/updates session log file with timestamp for continuity tracking.
+ * Stdout is shown in verbose mode for SessionEnd.
  */
 
 const path = require('path');
@@ -15,13 +13,11 @@ const {
   getDateString,
   getTimeString,
   ensureDir,
-  readFile,
   writeFile,
-  replaceInFile,
-  log
+  replaceInFile
 } = require('../lib/utils');
 
-async function main() {
+function main() {
   const sessionsDir = getSessionsDir();
   const today = getDateString();
   const sessionFile = path.join(sessionsDir, `${today}-session.tmp`);
@@ -30,19 +26,14 @@ async function main() {
 
   const currentTime = getTimeString();
 
-  // If session file exists for today, update the end time
   if (fs.existsSync(sessionFile)) {
-    const success = replaceInFile(
+    replaceInFile(
       sessionFile,
       /\*\*Last Updated:\*\*.*/,
       `**Last Updated:** ${currentTime}`
     );
-
-    if (success) {
-      log(`[SessionEnd] Updated session file: ${sessionFile}`);
-    }
+    console.log(`[SessionEnd] Updated: ${sessionFile}`);
   } else {
-    // Create new session file with template
     const template = `# Session: ${today}
 **Date:** ${today}
 **Started:** ${currentTime}
@@ -70,13 +61,10 @@ async function main() {
 `;
 
     writeFile(sessionFile, template);
-    log(`[SessionEnd] Created session file: ${sessionFile}`);
+    console.log(`[SessionEnd] Created: ${sessionFile}`);
   }
 
   process.exit(0);
 }
 
-main().catch(err => {
-  console.error('[SessionEnd] Error:', err.message);
-  process.exit(0);
-});
+main();

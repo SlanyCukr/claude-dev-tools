@@ -2,33 +2,46 @@
 /**
  * Console.log Warning Hook
  *
- * Runs on PostToolUse for Edit tool on JS/TS files.
+ * Runs on PostToolUse for Edit tool.
  * Warns if console.log statements were added.
  */
 
 const fs = require('fs');
 
-async function main() {
-  // Read tool input from stdin (Claude Code passes context via stdin)
+function main() {
   let input = '';
 
   try {
     input = fs.readFileSync(0, 'utf-8');
   } catch {
-    // No stdin available
     process.exit(0);
   }
 
-  // Check if the edit added console.log
-  if (input.includes('console.log')) {
-    console.error('[ConsoleLogWarning] WARNING: console.log detected in edit');
-    console.error('[ConsoleLogWarning] Consider removing before commit or use proper logging');
+  // Only check JS/TS files
+  let data;
+  try {
+    data = JSON.parse(input);
+  } catch {
+    process.exit(0);
+  }
+
+  const filePath = data?.tool_input?.file_path || '';
+  if (!/\.(js|jsx|ts|tsx|mjs|cjs)$/.test(filePath)) {
+    process.exit(0);
+  }
+
+  const newString = data?.tool_input?.new_string || '';
+  if (newString.includes('console.log')) {
+    const message = '⚠️ console.log detected - remember to remove before commit';
+    console.log(JSON.stringify({
+      systemMessage: message,
+      hookSpecificOutput: {
+        additionalContext: message
+      }
+    }));
   }
 
   process.exit(0);
 }
 
-main().catch(err => {
-  console.error('[ConsoleLogWarning] Error:', err.message);
-  process.exit(0);
-});
+main();

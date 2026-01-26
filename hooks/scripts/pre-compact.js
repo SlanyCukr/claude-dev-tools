@@ -2,10 +2,8 @@
 /**
  * PreCompact Hook - Save state before context compaction
  *
- * Cross-platform (Windows, macOS, Linux)
- *
- * Runs before Claude compacts context, giving you a chance to
- * preserve important state that might get lost in summarization.
+ * Logs compaction events and marks session files.
+ * Stdout is shown in verbose mode for PreCompact.
  */
 
 const path = require('path');
@@ -15,34 +13,27 @@ const {
   getTimeString,
   findFiles,
   ensureDir,
-  appendFile,
-  log
+  appendFile
 } = require('../lib/utils');
 
-async function main() {
+function main() {
   const sessionsDir = getSessionsDir();
   const compactionLog = path.join(sessionsDir, 'compaction-log.txt');
 
   ensureDir(sessionsDir);
 
-  // Log compaction event with timestamp
   const timestamp = getDateTimeString();
   appendFile(compactionLog, `[${timestamp}] Context compaction triggered\n`);
 
-  // If there's an active session file, note the compaction
   const sessions = findFiles(sessionsDir, '*.tmp');
-
   if (sessions.length > 0) {
     const activeSession = sessions[0].path;
     const timeStr = getTimeString();
-    appendFile(activeSession, `\n---\n**[Compaction occurred at ${timeStr}]** - Context was summarized\n`);
+    appendFile(activeSession, `\n---\n**[Compaction at ${timeStr}]** - Context summarized\n`);
   }
 
-  log('[PreCompact] State saved before compaction');
+  console.log(`[PreCompact] State saved at ${timestamp}`);
   process.exit(0);
 }
 
-main().catch(err => {
-  console.error('[PreCompact] Error:', err.message);
-  process.exit(0);
-});
+main();
