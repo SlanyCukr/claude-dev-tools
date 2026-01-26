@@ -43,7 +43,6 @@ zai-speckit-plugin/
 ├── hooks/                # Event-driven automation
 │   ├── hooks.json        # Hook configuration
 │   ├── block_antipatterns.py
-│   ├── validate_bash_output.py
 │   ├── lib/              # Hook utilities
 │   │   └── utils.js
 │   └── scripts/          # Node.js hook implementations
@@ -121,7 +120,6 @@ Hooks intercept Claude Code lifecycle events:
 | Event | Hook | Purpose |
 |-------|------|---------|
 | PreToolUse (Edit) | block_antipatterns.py | Block backward compat, fallbacks |
-| PreToolUse (Bash) | validate_bash_output.py | Validate bash command safety |
 | PreToolUse (*) | suggest-compact.js | Suggest compaction after many tool calls |
 | PostToolUse (Edit) | console-log-warning.js | Warn about console.log |
 | SessionStart | session-start.js | Load previous context |
