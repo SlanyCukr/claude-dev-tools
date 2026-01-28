@@ -13,7 +13,7 @@ zai-speckit-plugin/
 ├── .claude-plugin/       # Plugin metadata
 │   ├── plugin.json       # Name, version, description
 │   └── marketplace.json  # Marketplace integration config
-├── agents/               # Subagent definitions (15 agents)
+├── agents/               # Subagent definitions (16 agents)
 │   ├── build-agent.md
 │   ├── python-build-agent.md
 │   ├── react-nextjs-agent.md
@@ -28,11 +28,10 @@ zai-speckit-plugin/
 │   ├── tdd-guide.md            # NEW
 │   ├── e2e-runner.md           # NEW
 │   ├── refactor-cleaner.md     # NEW
-│   └── architect.md            # NEW
-├── commands/             # Slash commands (6 total)
-│   ├── feature.md        # /feature - Build something new
+│   ├── architect.md            # NEW
+│   └── plan-refiner.md         # NEW
+├── commands/             # Slash commands (4 total)
 │   ├── bugfix.md         # /bugfix - Fix problems (bugs, build, perf)
-│   ├── test.md           # /test - Add tests (TDD or E2E)
 │   ├── security.md       # /security - Security review or audit
 │   ├── refactor.md       # /refactor - Dead code cleanup
 │   └── help.md           # /help - Quick reference
@@ -43,13 +42,11 @@ zai-speckit-plugin/
 ├── hooks/                # Event-driven automation
 │   ├── hooks.json        # Hook configuration
 │   ├── block_antipatterns.py
+│   ├── speckit_subagent_context.py  # Speckit command guidance
 │   ├── lib/              # Hook utilities
 │   │   └── utils.js
 │   └── scripts/          # Node.js hook implementations
-│       ├── session-start.js
-│       ├── session-end.js
 │       ├── suggest-compact.js
-│       ├── pre-compact.js
 │       └── console-log-warning.js
 ├── lib/                  # Supporting libraries
 │   └── toon.py           # TOON parser
@@ -75,6 +72,7 @@ zai-speckit-plugin/
 | e2e-runner | opus | Playwright E2E tests |
 | refactor-cleaner | opus | Dead code elimination |
 | architect | opus | System design, ADRs |
+| plan-refiner | sonnet | Validate plans against project rules |
 | codebase-explorer | sonnet | Fast codebase search |
 | context7-docs | sonnet | Library documentation lookup |
 | web-research | sonnet | Web search for docs |
@@ -92,13 +90,11 @@ Each agent is a Markdown file with:
 
 ## Commands System
 
-Six commands covering all common workflows:
+Four commands that complement speckit (use speckit for feature development):
 
 | Command | Purpose | Workflow |
 |---------|---------|----------|
-| /feature | Build something new | architect → explore → tdd → build → review |
 | /bugfix | Fix problems (bugs, build errors, perf) | root-cause → explore → tdd → build → review |
-| /test | Add tests (TDD or E2E) | explore → tdd-guide or e2e-runner → review |
 | /security | Security review or full audit | security-reviewer (+ explore → build if audit) |
 | /refactor | Dead code cleanup | refactor-cleaner → explore → build → review |
 | /help | Quick reference | - |
@@ -121,10 +117,8 @@ Hooks intercept Claude Code lifecycle events:
 |-------|------|---------|
 | PreToolUse (Edit) | block_antipatterns.py | Block backward compat, fallbacks |
 | PreToolUse (*) | suggest-compact.js | Suggest compaction after many tool calls |
+| UserPromptSubmit | speckit_subagent_context.py | Inject subagent guidance for speckit commands |
 | PostToolUse (Edit) | console-log-warning.js | Warn about console.log |
-| SessionStart | session-start.js | Load previous context |
-| SessionEnd | session-end.js | Persist session state |
-| PreCompact | pre-compact.js | Save state before compaction |
 
 ## Speckit Integration
 
@@ -134,9 +128,10 @@ Maps speckit commands to recommended agents:
 |---------|--------|---------|
 | speckit.specify | codebase-explorer | Understand patterns before spec |
 | speckit.clarify | web-research, context7-docs | Research and docs |
-| speckit.plan | codebase-explorer, web-research, context7-docs | Parallel exploration |
-| speckit.implement | python-build-agent, react-nextjs-agent, build-agent | Specialized implementation |
-| speckit.tasks | codebase-explorer | Task breakdown |
+| speckit.plan | codebase-explorer, web-research, context7-docs, architect, plan-refiner | Research + architecture + validation |
+| speckit.tasks | codebase-explorer, architect | Task breakdown with structure |
+| speckit.implement | tdd-guide, build agents, code-reviewer, security-reviewer, e2e-runner | TDD → build → review |
+| speckit.review | code-reviewer, security-reviewer, tdd-guide | Post-implementation quality check |
 
 ## Design Philosophy
 

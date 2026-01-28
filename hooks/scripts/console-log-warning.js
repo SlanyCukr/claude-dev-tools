@@ -36,6 +36,7 @@ function main() {
     console.log(JSON.stringify({
       systemMessage: message,
       hookSpecificOutput: {
+        hookEventName: "PostToolUse",
         additionalContext: message
       }
     }));

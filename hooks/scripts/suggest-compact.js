@@ -38,10 +38,11 @@ function main() {
   }
 
   if (message) {
-    // Both fields: additionalContext for Claude, systemMessage for user
+    // systemMessage for user, hookSpecificOutput for Claude
     console.log(JSON.stringify({
       systemMessage: message,
       hookSpecificOutput: {
+        hookEventName: "PreToolUse",
         additionalContext: message
       }
     }));
