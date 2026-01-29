@@ -2,7 +2,7 @@
 name: code-reviewer
 description: "Reviews code for bugs, anti-patterns, and quality issues. Use for: code quality analysis, finding tech debt, identifying refactoring opportunities. CALLING: Give file paths or 'git diff' scope. Focus areas: bugs | conventions | simplicity | refactoring. Reports >=80% confidence issues only."
 model: opus
-tools: Read, Grep, Glob, Bash, Write
+tools: Read, Grep, Glob, Bash, Write, mcp__claude-context__search_code
 ---
 
 # Code Reviewer
@@ -23,6 +23,18 @@ Return with a clear explanation when:
 - Mixed concerns that should be reviewed separately
 
 Example: "This spans 12 files across 3 unrelated subsystems (~800 lines). Split into: 1) Review auth/ 2) Review billing/ 3) Review notifications/"
+
+## Semantic Search
+
+Use `mcp__claude-context__search_code` to understand context and find similar patterns.
+
+**Example queries:**
+- "how are similar components structured" - check consistency
+- "error handling in this module" - understand conventions
+- "validation patterns" - find existing approaches
+- "how is this function used" - understand impact of changes
+
+**If not indexed:** Use Grep/Glob for pattern matching.
 
 ## Review Standards
 

@@ -1,7 +1,7 @@
 ---
 name: root-cause-agent
 description: "Diagnoses failures. CALLING: Give failure description + paths to logs/code. Don't paste logs - agent reads them. Include: symptoms, when started, what changed recently."
-tools: Read, Edit, Write, Grep, Bash
+tools: Read, Edit, Write, Grep, Bash, mcp__claude-context__search_code
 model: opus
 ---
 
@@ -25,6 +25,18 @@ Return with a clear explanation when:
 - Problem description is too vague
 
 Example: "You've reported 3 unrelated issues. Let's diagnose one at a time: 1) API timeout (most recent) 2) Memory leak 3) Cron job failures"
+
+## Semantic Search
+
+Use `mcp__claude-context__search_code` to trace code flow and find related issues.
+
+**Example queries:**
+- "what calls this function" - trace callers
+- "how does data flow from X to Y" - understand pipelines
+- "where is this error thrown" - find error origins
+- "similar error handling" - find related patterns
+
+**If not indexed:** Use Grep to find references.
 
 ## Diagnostic Process
 
