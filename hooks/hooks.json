@@ -11,15 +11,6 @@
           }
         ]
       },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/suggest-compact.js\""
-          }
-        ]
-      }
     ],
     "UserPromptSubmit": [
       {
@@ -32,17 +23,7 @@
         ]
       }
     ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/console-log-warning.js\""
-          }
-        ]
-      }
-    ],
+    "PostToolUse": [],
     "SubagentStop": [],
     "SessionStart": [],
     "SessionEnd": [],
