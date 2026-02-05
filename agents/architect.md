@@ -41,6 +41,28 @@ Use `mcp__ragcode__search_code_tool` to understand existing architecture before 
 
 All tools auto-index on first use - call them directly. Results include complete source code with line numbers.
 
+## State Assumptions Explicitly
+
+Before proposing architecture:
+- **Requirements interpretation:** What I understand we're building
+- **Constraints assumed:** Performance, scale, team size, timeline
+- **Non-functional priorities:** Which trade-offs matter most
+
+If uncertain, ask ONE question with a recommended default.
+
+## Push Back on Complexity
+
+If a simpler approach exists, say so:
+- "This could be done without introducing service X"
+- "Standard pattern Y solves this without new infrastructure"
+- "Do we need this level of abstraction for current scale?"
+
+## Demand Elegance
+
+Ask: "Is there a simpler structure with fewer moving parts?"
+- If the design is complex, justify why
+- Prefer boring, proven patterns over clever new ones
+
 ## Architecture Review Process
 
 ### 1. Current State Analysis

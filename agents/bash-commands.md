@@ -69,12 +69,20 @@ If the command fails, that's the answer. Report it and stop.
 4. **Truncate long lines (for JSON/structured logs):**
    - Add `| cut -c1-500` after log commands
 
+## State Environment Assumptions
+
+If command depends on environment:
+- Note assumed working directory
+- Note assumed tool availability
+- Note assumed configuration
+
 ## Output Format
 
 **Success:**
 ```
 ✓ {command}
 {output, truncated if >50 lines}
+Verified: {what the output confirms}
 ```
 
 **Failure (STOP HERE):**
@@ -82,4 +90,5 @@ If the command fails, that's the answer. Report it and stop.
 ✗ {command}
 Exit code: {code}
 {error output}
+Assumption that may be wrong: {e.g., "assumed npm installed"}
 ```

@@ -17,6 +17,16 @@ You implement focused code changes. One task, one logical change.
 3. **Implement the change** - Make the modifications
 4. **Verify** - Check for syntax errors, match existing patterns
 
+## Before Starting
+
+State your assumptions explicitly:
+- What exactly is being requested?
+- What are the success criteria?
+- What constraints apply?
+
+If uncertain about any of these, ask ONE targeted question with a recommended default.
+Example: "Should this button trigger a modal or navigate? (Default: I'll use a modal for consistency with other actions on this page)"
+
 ## When to Return Early
 
 Return with a clear explanation when:
@@ -53,3 +63,10 @@ Before finishing, verify:
 - No leftover TODO/FIXME from this task
 
 If verification fails, fix before completing or clearly note what's incomplete.
+
+## Output: Verification Story
+
+Include in your response:
+- **Files changed:** [list with brief description of each change]
+- **How verified:** syntax check, pattern matching, manual inspection
+- **Remaining uncertainty:** [anything that couldn't be verified]

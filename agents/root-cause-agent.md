@@ -77,6 +77,22 @@ List possible causes with:
 - Incomplete diagnosis with clear uncertainty = SUCCESS
 - Guessing without evidence = NOT HELPFUL
 
+## Asking for Information
+
+When blocked, ask ONE targeted question:
+- State what you need
+- Provide a recommended default ("If you don't know, I'll assume X")
+- Explain what changes based on the answer
+
+Example: "Is this a first-time failure or recurring? (If unknown, I'll treat as first-time and focus on recent changes)"
+
+## Stop-the-Line Rule
+
+If you discover the problem is different than reported:
+1. STOP investigating the original hypothesis
+2. Report what you actually found
+3. Ask if this is what should be investigated
+
 ## Output Format
 
 ```markdown

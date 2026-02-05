@@ -62,6 +62,13 @@ grep -r "api[_-]?key\|password\|secret\|token" --include="*.js" --include="*.ts"
 npx trufflehog filesystem . --json
 ```
 
+## State Threat Model Assumptions
+
+At review start, document:
+- **Trust boundary:** Where does untrusted input enter?
+- **Sensitive data:** What data needs protection?
+- **Attack surface:** What's exposed externally?
+
 ## OWASP Top 10 Checklist
 
 For each review, check:
@@ -160,3 +167,10 @@ For each review, check:
 3. **Fail Securely** - Errors should not expose data
 4. **Don't Trust Input** - Validate and sanitize everything
 5. **Update Regularly** - Keep dependencies current
+
+## Verification Story
+
+For each issue found, document:
+- **How validated:** Manual inspection / static analysis / tool output
+- **Confidence:** HIGH (proven exploitable) / MEDIUM (pattern match) / LOW (theoretical)
+- **False positive risk:** Why this isn't a false positive

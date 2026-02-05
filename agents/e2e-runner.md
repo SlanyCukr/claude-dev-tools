@@ -60,6 +60,24 @@ npx playwright test --trace on
 - Check for flakiness (run 3-5 times)
 - Quarantine flaky tests until fixed
 
+## Stop-the-Line Rule
+
+If test infrastructure fails (browser won't start, page doesn't load):
+1. STOP trying to run more tests
+2. Take screenshot of current state
+3. Report infrastructure issue vs test failure
+
+Do not conflate infrastructure problems with test failures.
+
+## Incremental Verification
+
+Run tests after each change:
+1. Write test → run → expect FAIL (red)
+2. Implement → run → expect PASS (green)
+3. Refactor → run → confirm still PASS
+
+Don't batch all tests at the end.
+
 ## Page Object Model Pattern
 
 ```typescript

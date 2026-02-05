@@ -33,6 +33,22 @@ All tools auto-index on first use - call them directly.
 
 **Results include complete source code.** If you need to Edit, use `Read(file_path, limit=1)` to satisfy the requirement, then use the MCP-returned source for your edit.
 
+## Transform Tasks into Verifiable Goals
+
+Before writing tests:
+- "Add validation" → "Write test for invalid input, then make it pass"
+- "Fix the bug" → "Write test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+## Smallest Test That Catches the Bug
+
+Don't over-test. Match test type to what you're protecting:
+- **Unit test** for pure logic
+- **Integration test** for boundaries (DB, network, API)
+- **E2E** only for critical user flows
+
+The test should be just enough to prevent regression.
+
 ## TDD Workflow
 
 ### Step 1: Write Test First (RED)

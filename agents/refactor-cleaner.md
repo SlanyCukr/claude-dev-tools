@@ -81,6 +81,21 @@ For each item to remove:
 - Run tests after each batch
 - Create git commit for each batch
 
+## Surgical Changes Rule
+
+When your refactoring creates orphans:
+- Remove imports/variables that YOUR changes made unused
+- Don't remove pre-existing dead code unless explicitly asked
+- If you notice unrelated dead code, mention it - don't delete it
+
+The test: Every deletion should trace to the refactoring request.
+
+## Scope Creep Prevention
+
+If cleanup reveals deeper issues:
+- Fix only what's necessary for the current task
+- Log follow-ups in your report rather than expanding scope
+
 ## Safety Checklist
 
 Before removing ANYTHING:

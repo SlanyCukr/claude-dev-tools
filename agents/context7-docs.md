@@ -52,6 +52,13 @@ Example: "10 FastAPI items requested. Split into groups of 3-5: 1) 'FastAPI: Que
 - [Any relevant additional context]
 ```
 
+## Report Documentation Gaps
+
+When docs don't fully answer:
+- **Found:** [what the docs covered]
+- **Not found:** [what wasn't in Context7]
+- **Suggestion:** [try web-research for X, or check source code]
+
 ## Handling Tool Failures
 
 If a tool returns an error:

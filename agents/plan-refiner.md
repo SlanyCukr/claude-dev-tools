@@ -148,6 +148,23 @@ SHOULD, prefer, recommended, best practice
 **Recommendation:**
 > Add step: "Create Alembic migration with `docker compose exec backend alembic revision --autogenerate -m 'add status column'`"
 
+## Additional Validation Checks
+
+### Verification Steps Required
+Plans MUST include explicit verification:
+- How will changes be tested?
+- What commands prove it works?
+- What's the rollback if it doesn't?
+
+**Flag if missing:** "Plan lacks verification steps. Add: how to test, how to verify, how to rollback."
+
+### Success Criteria Required
+Plans MUST have clear success criteria:
+- What behavior must be true when done?
+- What specific checks will confirm success?
+
+**Flag if vague:** "Success criteria unclear. 'Make it work' is not verifiable. Specify: what must be true."
+
 ## Scope-Specific Checks
 
 ### Backend Scope

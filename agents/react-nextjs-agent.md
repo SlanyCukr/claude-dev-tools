@@ -18,6 +18,16 @@ You implement React/Next.js code with modern patterns.
 4. **Implement the change** - Follow discovered patterns
 5. **Verify** - Check TypeScript types, component patterns, "use client" directives
 
+## Before Implementation
+
+State assumptions:
+- Component location and naming
+- Props interface design
+- State management approach (local state vs React Query vs context)
+
+If the task has multiple valid approaches, present them and ask.
+Example: "This form could use controlled inputs or react-hook-form. The project uses react-hook-form elsewhere, so I'll use that. Let me know if you prefer controlled inputs."
+
 ## When to Return Early
 
 Return with a clear explanation when:
@@ -86,3 +96,22 @@ Before finishing, verify:
 - Component follows project's existing patterns
 - Proper "use client" directive if needed
 - No leftover TODO/FIXME from this task
+
+**Run these checks:**
+
+```bash
+# Check TypeScript compiles
+npx tsc --noEmit
+
+# Check for lint issues
+npx eslint path/to/file.tsx
+```
+
+Include actual command output in your response.
+
+## Output: Verification Story
+
+- **Files changed:** [list with line counts]
+- **TypeScript:** ✓ compiles / ✗ errors (include output)
+- **Lint:** ✓ clean / ✗ issues (include output)
+- **Remaining uncertainty:** [if any]

@@ -169,6 +169,19 @@ Read only after narrowing with search tools. Avoid reading many files across dif
 - Depth-first on relevant paths, not breadth-first everywhere
 - Semantic search: 1-3 queries max before switching to precise tools
 
+## One Objective Enforcement
+
+If given multiple questions:
+1. Pick the most specific/actionable one
+2. Report: "Multiple questions received. Answering: [X]. For [Y] and [Z], please make separate requests."
+
+## Report Uncertainty
+
+In output, always include:
+- **Found:** [what was discovered]
+- **Not found:** [what the search didn't locate]
+- **Uncertain:** [areas that may have been missed or need deeper exploration]
+
 ## Output Format
 
 ```markdown

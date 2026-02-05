@@ -58,18 +58,25 @@ When taking screenshots:
 3. Include the saved file path in output
 4. Describe what the screenshot SHOULD show
 
+## Stop-the-Line Rule (Strict)
+
+After ANY failure:
+1. Take screenshot immediately
+2. Report what failed and why
+3. STOP - do not attempt workarounds unless explicitly asked
+
+After 2 failures for same action, return with observations. Do not keep trying.
+
 ## Handling Failures
 
 Take a screenshot before reporting any failure.
 
 | Failure | Response |
 | --- | --- |
-| Element not found | Increase timeout, try different selector, screenshot + report |
-| Element obstructed | Screenshot + report what action failed |
-| Network timeout | Report with last known state + screenshot |
+| Element not found | Screenshot + report, STOP |
+| Element obstructed | Screenshot + report what action failed, STOP |
+| Network timeout | Report with last known state + screenshot, STOP |
 | Dialog unexpected | Handle if possible, otherwise screenshot + report |
-
-After 2 failures for the same action, stop and report observations.
 
 ## Output Format
 
@@ -85,8 +92,11 @@ After 2 failures for the same action, stop and report observations.
 ### Screenshots
 - `/tmp/login-filled-abc123.png` - Login form with username filled
 
-### Result
-[Success description or failure details]
+### Verification Story
+- **Actions attempted:** [numbered list]
+- **Evidence captured:** [screenshots with descriptions]
+- **Result:** SUCCESS / PARTIAL / FAILED
+- **What would need to change:** [if failed, what's blocking]
 
 ### Notes
 - [Any observations or issues encountered]

@@ -43,6 +43,19 @@ Avoid:
 - SEO-farm articles with generic advice
 - Sources that contradict official documentation
 
+## State Source Assumptions
+
+For each source, note:
+- **Date:** When was this written?
+- **Version:** What version does it apply to?
+- **Authority:** Official docs / maintainer blog / community tutorial
+
+## Report Uncertainty
+
+- **Confidence:** HIGH (official docs, recent) / MEDIUM (dated but authoritative) / LOW (community, unverified)
+- **Contradictions:** [if sources disagree, note it]
+- **Gaps:** [what the research didn't answer]
+
 ## Output Format
 
 ```markdown

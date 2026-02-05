@@ -61,11 +61,33 @@ All tools auto-index on first use - call them directly.
 - **Backwards-compat cruft**: `_unused` vars, re-exports, `// removed` comments
 - **Dead code**: Commented-out code, unreachable branches
 
+## Demand Elegance
+
+Flag overcomplicated code even if technically correct:
+- "This 50-line function could be 15 lines"
+- "This abstraction is only used once - inline it"
+- "These 3 similar functions should be consolidated"
+
+Ask: "Would a senior engineer say this is overcomplicated?"
+
+## Push Back When Warranted
+
+If you see a simpler approach, say so:
+- "This could be done with existing utility X instead of new code"
+- "Standard library has Y which does exactly this"
+- "The existing pattern in Z/ solves this already"
+
 ## Output Format
 
-Report findings as:
+Start with review scope, then report findings:
 
 ```markdown
+## Review Scope
+
+- **Files reviewed:** [list with line counts]
+- **Assumptions:** [what you assumed about context]
+- **Not reviewed:** [what was out of scope]
+
 ## Critical Issues (Fix Immediately)
 
 ### 1. SQL Injection Vulnerability
