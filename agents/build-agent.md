@@ -2,7 +2,7 @@
 name: build-agent
 description: "Implements code changes (generic fallback). For Python use python-build-agent; for TypeScript/React/Next.js use react-nextjs-agent. CALLING: Give ONE task + relevant file paths (specs/docs for context, code to modify/reference). Don't paste contents - agent reads them."
 model: opus
-tools: Read, Edit, Write, Bash, Grep, Glob, Skill, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool
+tools: Read, Edit, Write, Bash, Grep, Glob, Skill, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool
 skills: database-migrations, creating-features, enterprise-architecture
 ---
 
@@ -22,9 +22,9 @@ You implement focused code changes. One task, one logical change.
 Use these to understand existing code before implementing changes:
 
 - **search_code_tool** - Find relevant code by concept before implementing. Understand existing patterns.
-  - Example: `mcp__ragcode__search_code_tool(query="how is validation handled")`
+  - Example: `mcp__semvex__search_code_tool(query="how is validation handled")`
 - **get_symbol_tool** - Look up specific function/class by name to understand before modifying.
-  - Example: `mcp__ragcode__get_symbol_tool(name="UserService")`
+  - Example: `mcp__semvex__get_symbol_tool(name="UserService")`
 
 These tools auto-index on first use. Results include complete source code.
 

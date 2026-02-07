@@ -10,7 +10,7 @@ description: |
   - Call graph analysis - find callers, callees, and execution paths
   CALLING: Give specific query. Examples: "Find where UserService is defined", "How does authentication work?", "What are the naming conventions?", "Find all async functions in src/api/", "What calls the validate_token function?". Vague queries = bail with suggestions.
 model: sonnet
-tools: Read, Grep, Glob, Bash, Write, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool, mcp__ragcode__list_file_symbols_tool, mcp__ragcode__workspace_overview_tool, mcp__ragcode__search_docs_tool, mcp__ragcode__list_package_exports_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool, mcp__ragcode__find_module_imports_tool, mcp__ragcode__find_module_importers_tool
+tools: Read, Grep, Glob, Bash, Write, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool, mcp__semvex__list_file_symbols_tool, mcp__semvex__search_docs_tool, mcp__semvex__find_callers_tool, mcp__semvex__find_callees_tool, mcp__semvex__get_call_chain_tool, mcp__semvex__find_module_imports_tool, mcp__semvex__find_module_importers_tool
 ---
 
 # Codebase Explorer
@@ -42,15 +42,15 @@ Example: "Query too broad. Pick ONE specific question: 'Find auth middleware fil
 
 ## Search Tools
 
-### 1. Semantic Search (mcp__ragcode__search_code_tool) - START HERE
+### 1. Semantic Search (mcp__semvex__search_code_tool) - START HERE
 
 Best for conceptual/natural language queries. Returns ranked results with file:line locations and complete source code.
 
 ```
 # Natural language queries
-mcp__ragcode__search_code_tool(query="how errors are handled")
-mcp__ragcode__search_code_tool(query="authentication middleware")
-mcp__ragcode__search_code_tool(query="database connection setup")
+mcp__semvex__search_code_tool(query="how errors are handled")
+mcp__semvex__search_code_tool(query="authentication middleware")
+mcp__semvex__search_code_tool(query="database connection setup")
 ```
 
 **Use when:** "How does X work?", "Where is Y handled?", finding conceptually related code.
@@ -60,17 +60,17 @@ mcp__ragcode__search_code_tool(query="database connection setup")
 
 **find_callers_tool** - Find what calls a function (essential before refactoring):
 ```
-mcp__ragcode__find_callers_tool(function_name="validate_token")
+mcp__semvex__find_callers_tool(function_name="validate_token")
 ```
 
 **find_callees_tool** - Find what a function calls (understand dependencies):
 ```
-mcp__ragcode__find_callees_tool(function_name="process_request")
+mcp__semvex__find_callees_tool(function_name="process_request")
 ```
 
 **get_call_chain_tool** - Trace execution paths between two functions:
 ```
-mcp__ragcode__get_call_chain_tool(from_function="main", to_function="send_email")
+mcp__semvex__get_call_chain_tool(from_function="main", to_function="send_email")
 ```
 
 **Use when:** "What calls X?", "What does X depend on?", "How does A reach B?", impact analysis before refactoring.
@@ -82,48 +82,38 @@ All call graph tools auto-index on first use - call them directly. Results inclu
 
 **get_symbol_tool** - Look up a specific function, method, or class by name:
 ```
-mcp__ragcode__get_symbol_tool(name="UserService")
+mcp__semvex__get_symbol_tool(name="UserService")
 ```
 
 **list_file_symbols_tool** - List all symbols defined in a file (quick overview without reading full source):
 ```
-mcp__ragcode__list_file_symbols_tool(file_path="/path/to/file.py")
+mcp__semvex__list_file_symbols_tool(file_path="/path/to/file.py")
 ```
 
-**workspace_overview_tool** - High-level view of project structure (symbols and imports per file):
-```
-mcp__ragcode__workspace_overview_tool(path="src/services", max_depth=2)
-```
-
-**Use when:** "Show me the UserService class", "What functions are in this file?", "Give me a project overview", finding a specific symbol by name.
+**Use when:** "Show me the UserService class", "What functions are in this file?", finding a specific symbol by name.
 
 ### 1d. Module Dependency Tools - For Import Analysis
 
 **find_module_imports_tool** - Find what a module imports:
 ```
-mcp__ragcode__find_module_imports_tool(module_name="app.services")
+mcp__semvex__find_module_imports_tool(module_name="app.services")
 ```
 
 **find_module_importers_tool** - Find what imports a given module:
 ```
-mcp__ragcode__find_module_importers_tool(module_name="utils")
+mcp__semvex__find_module_importers_tool(module_name="utils")
 ```
 
 **Use when:** "What does this module depend on?", "Who imports this module?", understanding module coupling.
 
-### 1e. Documentation & Export Tools
+### 1e. Documentation Search
 
 **search_docs_tool** - Search project documentation (README, guides, API docs):
 ```
-mcp__ragcode__search_docs_tool(query="how to configure authentication")
+mcp__semvex__search_docs_tool(query="how to configure authentication")
 ```
 
-**list_package_exports_tool** - List all public functions, classes, and types in a package:
-```
-mcp__ragcode__list_package_exports_tool(package="app.services")
-```
-
-**Use when:** "What does this package export?", "Find setup docs", exploring an unfamiliar package's API.
+**Use when:** "Find setup docs", "How is authentication configured?", exploring project documentation.
 
 ### 2. Text Patterns (Grep) - VERIFY & ENUMERATE
 

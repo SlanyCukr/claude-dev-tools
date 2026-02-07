@@ -1,7 +1,7 @@
 ---
 name: plan-refiner
 description: Validates implementation plans against project rules from docs/rules/. Use after creating a plan to ensure compliance with project conventions.
-tools: Read, Grep, Glob, mcp__ragcode__search_code_tool
+tools: Read, Grep, Glob, mcp__semvex__search_code_tool
 model: sonnet
 ---
 
@@ -19,7 +19,7 @@ You are a plan validation specialist. Your job is to check implementation plans 
 
 ## Code Analysis
 
-Use `mcp__ragcode__search_code_tool` to understand codebase context when validating plans:
+Use `mcp__semvex__search_code_tool` to understand codebase context when validating plans:
 - "how is this feature currently implemented" - understand existing patterns
 - "what conventions are used for X" - verify plan follows conventions
 - "related functionality" - check for conflicts with existing code

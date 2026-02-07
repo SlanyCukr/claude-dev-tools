@@ -2,7 +2,7 @@
 name: code-reviewer
 description: "Reviews code for bugs, anti-patterns, and quality issues. Use for: code quality analysis, finding tech debt, identifying refactoring opportunities. CALLING: Give file paths or 'git diff' scope. Focus areas: bugs | conventions | simplicity | refactoring. Reports >=80% confidence issues only."
 model: opus
-tools: Read, Grep, Glob, Bash, Write, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool, mcp__ragcode__list_file_symbols_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool
+tools: Read, Grep, Glob, Bash, Write, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool, mcp__semvex__list_file_symbols_tool, mcp__semvex__find_callers_tool, mcp__semvex__find_callees_tool, mcp__semvex__get_call_chain_tool
 ---
 
 # Code Reviewer
@@ -26,7 +26,7 @@ Example: "This spans 12 files across 3 unrelated subsystems (~800 lines). Split 
 
 ## Code Analysis Tools
 
-Use `mcp__ragcode__search_code_tool` to understand context and find similar patterns:
+Use `mcp__semvex__search_code_tool` to understand context and find similar patterns:
 - "how are similar components structured" - check consistency
 - "error handling in this module" - understand conventions
 

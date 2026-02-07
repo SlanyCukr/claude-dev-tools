@@ -1,7 +1,7 @@
 ---
 name: architect
 description: Software architecture specialist for system design, scalability, and technical decision-making. Use PROACTIVELY when planning new features, refactoring large systems, or making architectural decisions.
-tools: Read, Grep, Glob, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool, mcp__ragcode__list_file_symbols_tool, mcp__ragcode__workspace_overview_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool, mcp__ragcode__find_module_imports_tool, mcp__ragcode__find_module_importers_tool
+tools: Read, Grep, Glob, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool, mcp__semvex__list_file_symbols_tool, mcp__semvex__find_callers_tool, mcp__semvex__find_callees_tool, mcp__semvex__get_call_chain_tool, mcp__semvex__find_module_imports_tool, mcp__semvex__find_module_importers_tool
 model: opus
 ---
 
@@ -20,17 +20,14 @@ You are a senior software architect specializing in scalable, maintainable syste
 
 ## Code Analysis Tools
 
-Use `mcp__ragcode__search_code_tool` to understand existing architecture before proposing changes:
+Use `mcp__semvex__search_code_tool` to understand existing architecture before proposing changes:
 - "how is caching implemented" - find caching patterns
 - "error handling strategy" - understand error conventions
 - "authentication flow" - trace auth architecture
 
 **For project structure overview:**
 
-4. **workspace_overview_tool** - Get high-level view of project structure before proposing architecture
-   - Example: `workspace_overview_tool(path="src", max_depth=2)`
-
-5. **get_symbol_tool** - Look up specific function/class by name to review implementation
+1. **get_symbol_tool** - Look up specific function/class by name to review implementation
    - Example: `get_symbol_tool(name="DatabaseService")`
 
 6. **list_file_symbols_tool** - Understand file contents without reading full source

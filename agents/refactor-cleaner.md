@@ -1,7 +1,7 @@
 ---
 name: refactor-cleaner
 description: Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.
-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool, mcp__ragcode__list_file_symbols_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool, mcp__ragcode__find_module_imports_tool, mcp__ragcode__find_module_importers_tool
+tools: Read, Write, Edit, Bash, Grep, Glob, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool, mcp__semvex__list_file_symbols_tool, mcp__semvex__find_callers_tool, mcp__semvex__find_callees_tool, mcp__semvex__get_call_chain_tool, mcp__semvex__find_module_imports_tool, mcp__semvex__find_module_importers_tool
 model: opus
 ---
 
@@ -19,7 +19,7 @@ You are an expert refactoring specialist focused on code cleanup and consolidati
 
 ## Code Analysis Tools
 
-Use `mcp__ragcode__search_code_tool` to find usages and duplicates before removal:
+Use `mcp__semvex__search_code_tool` to find usages and duplicates before removal:
 - "similar implementations of X" - find duplicates to consolidate
 - "where is this pattern used" - understand scope of refactor
 

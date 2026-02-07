@@ -1,7 +1,7 @@
 ---
 name: root-cause-agent
 description: "Diagnoses failures. CALLING: Give failure description + paths to logs/code. Don't paste logs - agent reads them. Include: symptoms, when started, what changed recently."
-tools: Read, Edit, Write, Grep, Bash, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool, mcp__ragcode__list_file_symbols_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool
+tools: Read, Edit, Write, Grep, Bash, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool, mcp__semvex__list_file_symbols_tool, mcp__semvex__find_callers_tool, mcp__semvex__find_callees_tool, mcp__semvex__get_call_chain_tool
 model: opus
 ---
 
@@ -30,21 +30,21 @@ Example: "You've reported 3 unrelated issues. Let's diagnose one at a time: 1) A
 ## Code Analysis Tools
 
 **CRITICAL: For "trace execution path" or "how does X reach Y" queries:**
-Use `mcp__ragcode__get_call_chain_tool` FIRST - this is the ONLY tool that can trace actual execution paths.
+Use `mcp__semvex__get_call_chain_tool` FIRST - this is the ONLY tool that can trace actual execution paths.
 
 ```
-mcp__ragcode__get_call_chain_tool(from_function="entry_point", to_function="failing_function")
+mcp__semvex__get_call_chain_tool(from_function="entry_point", to_function="failing_function")
 ```
 
 Call it directly - it auto-indexes on first use. Returns up to 5 different paths if multiple exist.
 
 **For understanding what a function depends on:**
-Use `mcp__ragcode__find_callees_tool` to see all functions that X calls.
+Use `mcp__semvex__find_callees_tool` to see all functions that X calls.
 
 **For finding what triggers a failing function:**
-Use `mcp__ragcode__find_callers_tool` to find all callers of the failing function.
+Use `mcp__semvex__find_callers_tool` to find all callers of the failing function.
 ```
-mcp__ragcode__find_callers_tool(function_name="failing_function")
+mcp__semvex__find_callers_tool(function_name="failing_function")
 ```
 
 **For looking up specific code by name:**
@@ -54,7 +54,7 @@ mcp__ragcode__find_callers_tool(function_name="failing_function")
   - Example: `list_file_symbols_tool(file_path="/path/to/file.py")`
 
 **For finding code by concept:**
-Use `mcp__ragcode__search_code_tool` for semantic queries:
+Use `mcp__semvex__search_code_tool` for semantic queries:
 - "where is this error thrown" - find error origins
 - "similar error handling" - find related patterns
 
