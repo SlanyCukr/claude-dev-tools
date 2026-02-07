@@ -10,7 +10,7 @@
             "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/block_antipatterns.py\""
           }
         ]
-      },
+      }
     ],
     "UserPromptSubmit": [
       {
