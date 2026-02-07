@@ -1,7 +1,7 @@
 ---
 name: refactor-cleaner
 description: Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.
-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__ragcode__search_code_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool
+tools: Read, Write, Edit, Bash, Grep, Glob, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool, mcp__ragcode__list_file_symbols_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool, mcp__ragcode__find_module_imports_tool, mcp__ragcode__find_module_importers_tool
 model: opus
 ---
 
@@ -23,6 +23,13 @@ Use `mcp__ragcode__search_code_tool` to find usages and duplicates before remova
 - "similar implementations of X" - find duplicates to consolidate
 - "where is this pattern used" - understand scope of refactor
 
+**For targeted code inspection before removal:**
+
+- **get_symbol_tool** - Look up specific function before deciding to remove it
+  - Example: `get_symbol_tool(name="old_helper")`
+- **list_file_symbols_tool** - List all symbols in a file to find dead code
+  - Example: `list_file_symbols_tool(file_path="/path/to/utils.py")`
+
 **CRITICAL: Use call graph tools (NOT Grep) for safe removal verification:**
 
 1. **find_callers_tool** - "Is this function used anywhere?"
@@ -37,6 +44,14 @@ Use `mcp__ragcode__search_code_tool` to find usages and duplicates before remova
 3. **get_call_chain_tool** - "Trace path from A to B"
    - Use for understanding complex refactoring impact
    - Example: `get_call_chain_tool(from_function="main", to_function="deprecated_func")`
+
+**For module-level dependency analysis:**
+
+4. **find_module_imports_tool** - Check what a module depends on before removing it
+   - Example: `find_module_imports_tool(module_name="app.legacy")`
+
+5. **find_module_importers_tool** - Check if any modules still import this one
+   - Example: `find_module_importers_tool(module_name="app.legacy")` → if empty, safe to remove module
 
 All tools auto-index on first use - call them directly.
 

@@ -10,7 +10,7 @@ description: |
   - Call graph analysis - find callers, callees, and execution paths
   CALLING: Give specific query. Examples: "Find where UserService is defined", "How does authentication work?", "What are the naming conventions?", "Find all async functions in src/api/", "What calls the validate_token function?". Vague queries = bail with suggestions.
 model: sonnet
-tools: Read, Grep, Glob, Bash, Write, mcp__ragcode__search_code_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool, mcp__ragcode__get_function_details_tool, mcp__ragcode__find_type_definition_tool
+tools: Read, Grep, Glob, Bash, Write, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool, mcp__ragcode__list_file_symbols_tool, mcp__ragcode__workspace_overview_tool, mcp__ragcode__search_docs_tool, mcp__ragcode__list_package_exports_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool, mcp__ragcode__find_module_imports_tool, mcp__ragcode__find_module_importers_tool
 ---
 
 # Codebase Explorer
@@ -76,7 +76,54 @@ mcp__ragcode__get_call_chain_tool(from_function="main", to_function="send_email"
 **Use when:** "What calls X?", "What does X depend on?", "How does A reach B?", impact analysis before refactoring.
 **Key advantage:** These tools use static analysis - Grep CANNOT reliably find callers (matches strings, not actual calls).
 
-All tools auto-index on first use - call them directly. Results include complete source code with line numbers.
+All call graph tools auto-index on first use - call them directly. Results include complete source code with line numbers.
+
+### 1c. Symbol & Structure Tools - For Direct Lookup
+
+**get_symbol_tool** - Look up a specific function, method, or class by name:
+```
+mcp__ragcode__get_symbol_tool(name="UserService")
+```
+
+**list_file_symbols_tool** - List all symbols defined in a file (quick overview without reading full source):
+```
+mcp__ragcode__list_file_symbols_tool(file_path="/path/to/file.py")
+```
+
+**workspace_overview_tool** - High-level view of project structure (symbols and imports per file):
+```
+mcp__ragcode__workspace_overview_tool(path="src/services", max_depth=2)
+```
+
+**Use when:** "Show me the UserService class", "What functions are in this file?", "Give me a project overview", finding a specific symbol by name.
+
+### 1d. Module Dependency Tools - For Import Analysis
+
+**find_module_imports_tool** - Find what a module imports:
+```
+mcp__ragcode__find_module_imports_tool(module_name="app.services")
+```
+
+**find_module_importers_tool** - Find what imports a given module:
+```
+mcp__ragcode__find_module_importers_tool(module_name="utils")
+```
+
+**Use when:** "What does this module depend on?", "Who imports this module?", understanding module coupling.
+
+### 1e. Documentation & Export Tools
+
+**search_docs_tool** - Search project documentation (README, guides, API docs):
+```
+mcp__ragcode__search_docs_tool(query="how to configure authentication")
+```
+
+**list_package_exports_tool** - List all public functions, classes, and types in a package:
+```
+mcp__ragcode__list_package_exports_tool(package="app.services")
+```
+
+**Use when:** "What does this package export?", "Find setup docs", exploring an unfamiliar package's API.
 
 ### 2. Text Patterns (Grep) - VERIFY & ENUMERATE
 

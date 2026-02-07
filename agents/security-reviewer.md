@@ -1,7 +1,7 @@
 ---
 name: security-reviewer
 description: Security vulnerability detection and remediation specialist. Use PROACTIVELY after writing code that handles user input, authentication, API endpoints, or sensitive data. Flags secrets, SSRF, injection, unsafe crypto, and OWASP Top 10 vulnerabilities.
-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__ragcode__search_code_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool
+tools: Read, Write, Edit, Bash, Grep, Glob, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool, mcp__ragcode__list_file_symbols_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool, mcp__ragcode__get_call_chain_tool
 model: opus
 ---
 
@@ -28,6 +28,13 @@ Use `mcp__ragcode__search_code_tool` to find security-relevant code paths.
 - "database queries with user data" - find injection risks
 - "file upload processing" - find upload handlers
 - "API key usage" - find secret handling
+
+**For targeted code lookup:**
+
+- **get_symbol_tool** - Look up specific function implementation for security analysis
+  - Example: `get_symbol_tool(name="handle_upload")`
+- **list_file_symbols_tool** - Scan file for all functions/classes to identify attack surface
+  - Example: `list_file_symbols_tool(file_path="/path/to/api/routes.py")`
 
 **CRITICAL: For security analysis, use call graph tools:**
 

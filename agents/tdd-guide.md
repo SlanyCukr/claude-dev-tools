@@ -1,7 +1,7 @@
 ---
 name: tdd-guide
 description: Test-Driven Development specialist enforcing write-tests-first methodology. Use PROACTIVELY when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage.
-tools: Read, Write, Edit, Bash, Grep, mcp__ragcode__search_code_tool, mcp__ragcode__find_callers_tool
+tools: Read, Write, Edit, Bash, Grep, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool, mcp__ragcode__find_callers_tool, mcp__ragcode__find_callees_tool
 model: opus
 ---
 
@@ -25,9 +25,17 @@ Use `mcp__ragcode__search_code_tool` to find existing test patterns and similar 
 - "integration tests for this module" - understand test structure
 - "mock patterns" - find how dependencies are mocked
 
+**For looking up specific code:**
+- **get_symbol_tool** - Look up specific function to understand what needs testing
+  - Example: `get_symbol_tool(name="validate_user")`
+
 **For coverage analysis**, use `mcp__ragcode__find_callers_tool`:
 - "what calls this function" - identify all code paths that need testing
 - Example: `find_callers_tool(function_name="validate_user")` → ensure all callers have test coverage
+
+**For understanding dependencies to mock**, use `mcp__ragcode__find_callees_tool`:
+- "what does this function call" - essential for knowing what to mock in tests
+- Example: `find_callees_tool(function_name="process_order")` → mock each dependency
 
 All tools auto-index on first use - call them directly.
 

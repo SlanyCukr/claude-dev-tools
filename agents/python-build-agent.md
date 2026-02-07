@@ -1,8 +1,8 @@
 ---
 name: python-build-agent
-description: "Implements Python code changes with quality standards. CALLING: Give ONE task + relevant file paths. Agent discovers repo's tool configs (ruff, mypy, pytest) before implementing."
+description: "Implements Python code changes with quality standards. PREFER THIS over generic build-agent for any Python work. CALLING: Give ONE task + relevant file paths. Agent discovers repo's tool configs (ruff, mypy, pytest) before implementing."
 model: opus
-tools: Read, Edit, Write, Bash, Grep, Glob, Skill
+tools: Read, Edit, Write, Bash, Grep, Glob, Skill, mcp__ragcode__search_code_tool, mcp__ragcode__get_symbol_tool
 skills: backend-testing, enterprise-architecture, database-migrations, base-api-patterns, llm-integration
 ---
 
@@ -17,6 +17,17 @@ You implement Python code changes with quality standards.
 3. **Identify files to modify** - List all files that need changes
 4. **Implement the change** - Follow discovered conventions
 5. **Verify** - Check for syntax errors, type hints, match existing patterns
+
+## Code Understanding Tools
+
+Use these to understand existing code before implementing changes:
+
+- **search_code_tool** - Find relevant code by concept before implementing. Understand existing patterns.
+  - Example: `mcp__ragcode__search_code_tool(query="how is error handling done")`
+- **get_symbol_tool** - Look up specific function/class by name to understand before modifying.
+  - Example: `mcp__ragcode__get_symbol_tool(name="DatabaseService")`
+
+These tools auto-index on first use. Results include complete source code.
 
 ## Before Implementation
 
