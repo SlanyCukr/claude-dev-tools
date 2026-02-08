@@ -84,6 +84,89 @@ List possible causes with:
 - Remaining uncertainty
 - Recommended fix or next investigation step
 
+## Foundation Principles
+
+When debugging, return to foundational truths:
+
+- **What do you know for certain?** Observable facts, not assumptions
+- **What are you assuming?** "This library should work this way" — have you verified?
+- **Strip away everything you think you know.** Build understanding from observable facts only.
+
+## Cognitive Biases
+
+| Bias | Trap | Antidote |
+|------|------|----------|
+| **Confirmation** | Only look for evidence supporting your hypothesis | Actively seek disconfirming evidence. "What would prove me wrong?" |
+| **Anchoring** | First explanation becomes your anchor | Generate 3+ independent hypotheses before investigating any |
+| **Availability** | Recent bugs → assume similar cause | Treat each bug as novel until evidence suggests otherwise |
+| **Sunk Cost** | Spent 2 hours on one path, keep going despite evidence | Every 30 min: "If I started fresh, is this still the path I'd take?" |
+
+## Meta-Debugging: Your Own Code
+
+When debugging code you wrote, you're fighting your own mental model.
+
+1. **Treat your code as foreign** — Read it as if someone else wrote it
+2. **Question your design decisions** — Your implementation decisions are hypotheses, not facts
+3. **Admit your mental model might be wrong** — The code's behavior is truth; your model is a guess
+4. **Prioritize code you touched** — If you modified 100 lines and something breaks, those are prime suspects
+
+**The hardest admission:** "I implemented this wrong." Not "requirements were unclear" — YOU made an error.
+
+## When to Restart
+
+Consider starting over when:
+1. **2+ hours with no progress** — You're likely tunnel-visioned
+2. **3+ "fixes" that didn't work** — Your mental model is wrong
+3. **You can't explain the current behavior** — Don't add changes on top of confusion
+4. **You're debugging the debugger** — Something fundamental is wrong
+5. **The fix works but you don't know why** — This isn't fixed, this is luck
+
+## Hypothesis Quality
+
+### Falsifiability Requirement
+
+A good hypothesis can be proven wrong. If you can't design an experiment to disprove it, it's not useful.
+
+**Bad (unfalsifiable):**
+- "Something is wrong with the state"
+- "The timing is off"
+- "There's a race condition somewhere"
+
+**Good (falsifiable):**
+- "User state is reset because component remounts when route changes"
+- "API call completes after unmount, causing state update on unmounted component"
+- "Two async operations modify same array without locking, causing data loss"
+
+The difference: Specificity. Good hypotheses make specific, testable claims.
+
+### Evidence Quality Tiers
+
+**Strong evidence:**
+- Directly observable ("I see in logs that X happens")
+- Repeatable ("This fails every time I do Y")
+- Unambiguous ("The value is definitely null, not undefined")
+- Independent ("Happens even in fresh environment with no cache")
+
+**Weak evidence:**
+- Hearsay ("I think I saw this fail once")
+- Non-repeatable ("It failed that one time")
+- Ambiguous ("Something seems off")
+- Confounded ("Works after restart AND cache clear AND package update")
+
+### Experimental Design Framework
+
+For each hypothesis, follow this sequence:
+
+1. **Prediction** — If H is true, I will observe X
+2. **Test setup** — What do I need to do?
+3. **Measurement** — What exactly am I measuring?
+4. **Success criteria** — What confirms H? What refutes H?
+5. **Run** — Execute the test
+6. **Observe** — Record what actually happened
+7. **Conclude** — Does this support or refute H?
+
+**One hypothesis at a time.** If you change three things and it works, you don't know which one fixed it.
+
 ## Evidence Standards
 
 - Incomplete diagnosis with clear uncertainty = SUCCESS

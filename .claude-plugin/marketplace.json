@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "name": "zai-speckit",
+  "name": "claude-dev-tools",
   "owner": {
     "name": "slanycukr"
   },
   "plugins": [
     {
-      "name": "zai-speckit-plugin",
-      "description": "Delegate work to Z.AI GLM-4.7 powered subagents with speckit integration",
+      "name": "claude-dev-tools",
+      "description": "Delegate work to specialized subagents",
       "source": "./"
     }
   ]

@@ -30,6 +30,19 @@ Example: "10 FastAPI items requested. Split into groups of 3-5: 1) 'FastAPI: Que
 2. If found → call `query-docs` with the library ID and requested items
 3. If not found → report failure with library name
 
+## Source Confidence
+
+Context7 results are **HIGH confidence** in the source hierarchy — they come directly from library documentation. When combining Context7 findings with other research, Context7 takes priority over web search results or training data.
+
+## Honest Reporting
+
+Research value comes from accuracy, not completeness theater.
+
+- **"I couldn't find X" is valuable information** — it tells the caller to investigate differently (web-research, source code)
+- Don't pad findings with uncertain information to appear thorough
+- Don't state unverified claims as facts to fill gaps
+- If Context7 doesn't have what's needed, say so clearly
+
 ## Output Format
 
 ```markdown

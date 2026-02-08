@@ -1,6 +1,6 @@
-# zai-speckit-plugin
+# claude-dev-tools
 
-Claude Code plugin for delegating work to specialized subagents with speckit integration.
+Claude Code plugin for delegating work to specialized subagents.
 
 ## Version
 
@@ -9,7 +9,7 @@ Plugin version is defined in `.claude-plugin/plugin.json` (line 4).
 ## Project Structure
 
 ```
-zai-speckit-plugin/
+claude-dev-tools/
 ├── .claude-plugin/       # Plugin metadata
 │   ├── plugin.json       # Name, version, description
 │   └── marketplace.json  # Marketplace integration config
@@ -30,10 +30,17 @@ zai-speckit-plugin/
 │   ├── refactor-cleaner.md     # NEW
 │   ├── architect.md            # NEW
 │   └── plan-refiner.md         # NEW
-├── commands/             # Slash commands (4 total)
+├── commands/             # Slash commands (11 total)
+│   ├── quick.md          # /quick - Small task, minimal ceremony
+│   ├── plan.md           # /plan - Goal-backward planning
+│   ├── research.md       # /research - Parallel research synthesis
 │   ├── bugfix.md         # /bugfix - Fix problems (bugs, build, perf)
+│   ├── debug.md          # /debug - Persistent debugging across sessions
 │   ├── security.md       # /security - Security review or audit
 │   ├── refactor.md       # /refactor - Dead code cleanup
+│   ├── verify.md         # /verify - Check implementation meets goal
+│   ├── pause.md          # /pause - Save session state
+│   ├── resume.md         # /resume - Continue from paused session
 │   └── help.md           # /help - Quick reference
 ├── rules/                # Always-on guidelines
 │   ├── security.md       # Security best practices
@@ -42,7 +49,6 @@ zai-speckit-plugin/
 ├── hooks/                # Event-driven automation
 │   ├── hooks.json        # Hook configuration
 │   ├── block_antipatterns.py
-│   ├── speckit_subagent_context.py  # Speckit command guidance
 │   ├── lib/              # Hook utilities
 │   │   └── utils.js
 │   └── scripts/          # Node.js hook implementations
@@ -70,7 +76,7 @@ zai-speckit-plugin/
 | security-reviewer | opus | OWASP Top 10, secrets, vulnerabilities |
 | tdd-guide | opus | TDD workflow, 80% coverage |
 | e2e-runner | opus | Playwright E2E tests |
-| refactor-cleaner | opus | Dead code elimination |
+| refactor-cleaner | opus | Dead code elimination, code simplification |
 | architect | opus | System design, ADRs |
 | plan-refiner | sonnet | Validate plans against project rules |
 | codebase-explorer | sonnet | Fast codebase search |
@@ -90,13 +96,20 @@ Each agent is a Markdown file with:
 
 ## Commands System
 
-Four commands that complement speckit (use speckit for feature development):
+Eleven commands for common development workflows:
 
-| Command | Purpose | Workflow |
-|---------|---------|----------|
+| Command | Purpose | Key Agents |
+|---------|---------|------------|
+| /quick | Small task, minimal ceremony | build-agent, code-reviewer |
+| /plan | Goal-backward planning with validation | codebase-explorer, architect, plan-refiner |
+| /research | Parallel research synthesis | codebase-explorer, web-research, context7-docs |
 | /bugfix | Fix problems (bugs, build errors, perf) | root-cause → explore → tdd → build → review |
+| /debug | Persistent debugging across sessions | root-cause-agent, codebase-explorer, bash-commands |
 | /security | Security review or full audit | security-reviewer (+ explore → build if audit) |
 | /refactor | Dead code cleanup | refactor-cleaner → explore → build → review |
+| /verify | Check implementation meets its goal | codebase-explorer, bash-commands, code-reviewer |
+| /pause | Save session state for later | (main session only, no agents) |
+| /resume | Continue from paused session | (main session only, no agents) |
 | /help | Quick reference | - |
 
 ## Rules System
@@ -117,21 +130,7 @@ Hooks intercept Claude Code lifecycle events:
 |-------|------|---------|
 | PreToolUse (Edit) | block_antipatterns.py | Block backward compat, fallbacks |
 | PreToolUse (*) | suggest-compact.js | Suggest compaction after many tool calls |
-| UserPromptSubmit | speckit_subagent_context.py | Inject subagent guidance for speckit commands |
 | PostToolUse (Edit) | console-log-warning.js | Warn about console.log |
-
-## Speckit Integration
-
-Maps speckit commands to recommended agents:
-
-| Command | Agents | Purpose |
-|---------|--------|---------|
-| speckit.specify | codebase-explorer | Understand patterns before spec |
-| speckit.clarify | web-research, context7-docs | Research and docs |
-| speckit.plan | codebase-explorer, web-research, context7-docs, architect, plan-refiner | Research + architecture + validation |
-| speckit.tasks | codebase-explorer, architect | Task breakdown with structure |
-| speckit.implement | tdd-guide, build agents, code-reviewer, security-reviewer, e2e-runner | TDD → build → review |
-| speckit.review | code-reviewer, security-reviewer, tdd-guide | Post-implementation quality check |
 
 ## Design Philosophy
 

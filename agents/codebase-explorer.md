@@ -219,6 +219,14 @@ In output, always include:
 - **Not found:** [what the search didn't locate]
 - **Uncertain:** [areas that may have been missed or need deeper exploration]
 
+## Output Quality Principles
+
+**Be prescriptive, not descriptive:** "Use camelCase for functions" helps the caller write correct code. "Some functions use camelCase" doesn't. State conventions as instructions, not observations.
+
+**Patterns matter more than lists:** Show HOW things are done with code examples, not just WHAT exists. A code snippet demonstrating the repository pattern is more useful than listing 10 repository files.
+
+**File paths are critical:** Always use exact file paths — `src/services/user_service.py:42` not "the user service". Callers need to navigate directly to the code.
+
 ## Output Format
 
 ```markdown

@@ -12,17 +12,7 @@
         ]
       }
     ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/speckit_subagent_context.py\""
-          }
-        ]
-      }
-    ],
+    "UserPromptSubmit": [],
     "PostToolUse": [],
     "SubagentStop": [],
     "SessionStart": [],

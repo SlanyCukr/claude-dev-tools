@@ -1,17 +1,16 @@
-# zai-speckit-plugin
+# claude-dev-tools
 
-A Claude Code plugin for delegating work to **Z.AI GLM-4.7** powered subagents, with **speckit** integration.
+A Claude Code plugin for delegating work to specialized subagents.
 
 ## Overview
 
-This plugin implements a delegation-first workflow where Claude orchestrates while subagents (routed to Z.AI's GLM-4.7 via a proxy) execute the actual work. The agents are specifically prompted to work well with GLM-4.7's capabilities.
+This plugin implements a delegation-first workflow where Claude orchestrates while subagents execute the actual work.
 
 ### How It Works
 
 1. **Claude as Orchestrator**: The main Claude session plans and coordinates
-2. **Proxy Routing**: A separate proxy intercepts subagent requests and routes them to Z.AI
-3. **GLM-4.7 Execution**: Subagents run on GLM-4.7 for cost-effective, high-quality execution
-4. **Speckit Integration**: Hooks automatically inject subagent recommendations for speckit commands
+2. **Subagent Execution**: Specialized agents handle focused tasks in isolation
+3. **Quality Enforcement**: Hooks and rules enforce security, testing, and code quality standards
 
 ## Installation
 
@@ -19,13 +18,13 @@ This plugin implements a delegation-first workflow where Claude orchestrates whi
 ```json
 {
   "enabledPlugins": {
-    "zai-speckit-plugin@zai-speckit": true
+    "claude-dev-tools@claude-dev-tools": true
   },
   "extraKnownMarketplaces": {
-    "zai-speckit": {
+    "claude-dev-tools": {
       "source": {
         "source": "github",
-        "repo": "SlanyCukr/zai-speckit-plugin"
+        "repo": "SlanyCukr/claude-dev-tools"
       }
     }
   }
@@ -54,15 +53,20 @@ This plugin implements a delegation-first workflow where Claude orchestrates whi
 | `chrome-devtools` | Browser automation | sonnet |
 | `bash-commands` | Git, npm, system commands | sonnet |
 
-### Commands (6 Total)
+### Commands (11 Total)
 
 | Command | Purpose |
 |---------|---------|
-| `/feature` | Build something new |
+| `/quick` | Execute a small task with minimal ceremony |
+| `/plan` | Goal-backward planning with validation loop |
+| `/research` | Parallel research synthesis |
 | `/bugfix` | Fix problems (bugs, build errors, performance) |
-| `/test` | Add tests (TDD or E2E based on context) |
+| `/debug` | Persistent debugging across sessions |
 | `/security` | Security review or full audit |
 | `/refactor` | Dead code cleanup |
+| `/verify` | Check if implementation meets its goal |
+| `/pause` | Save session state for later |
+| `/resume` | Continue from a paused session |
 | `/help` | Quick reference with decision tree |
 
 ### Hooks
@@ -208,16 +212,6 @@ Run independent agents simultaneously for speed:
 └── architect         → Design with all context
 ```
 
-## Speckit Integration
-
-When you use speckit commands, the plugin automatically injects guidance:
-
-- `speckit.specify` → Recommends `codebase-explorer` for pattern discovery
-- `speckit.clarify` → Recommends `web-research` and `context7-docs`
-- `speckit.plan` → Recommends parallel exploration with multiple subagents
-- `speckit.implement` → Recommends `python-build-agent` or `react-nextjs-agent`
-- `speckit.tasks` → Recommends `codebase-explorer` for file structure understanding
-
 ## Philosophy
 
 ### Delegation First
@@ -241,11 +235,6 @@ Subagents should return early (without doing work) if:
 - Task is unclear → ask for clarification
 - Task is too broad → suggest how to split
 - Confidence is low → explain concerns
-
-## Related Projects
-
-- **Proxy**: Separate repository that intercepts Claude Code requests and routes subagent calls to Z.AI
-- **Speckit**: GitHub-based specification workflow that pairs with this plugin
 
 ## License
 

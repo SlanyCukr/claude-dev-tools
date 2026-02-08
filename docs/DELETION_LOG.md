@@ -21,7 +21,7 @@ Analyzed `/home/slanycukr/Documents/claude/zai-speckit-plugin/hooks/scripts/` fo
 #### Documentation Inconsistencies Found
 
 The `CLAUDE.md` file documents 4 Python hook files that do NOT exist:
-- `hooks/speckit_subagent_context.py` - MISSING
+- `hooks/speckit_subagent_context.py` - DELETED (speckit integration removed)
 - `hooks/bash_output_monitor.py` - MISSING (different from `validate_bash_output.py`)
 - `hooks/honesty_validator.py` - MISSING
 - `hooks/session_start_context.py` - MISSING
