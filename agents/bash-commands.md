@@ -3,12 +3,6 @@ name: bash-commands
 description: "Execute shell commands: git, docker, npm/yarn, pip/uv, running tests/builds."
 tools: Bash, TaskOutput
 model: sonnet
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/validate_bash_output.py\""
 ---
 
 # Bash Commands Agent

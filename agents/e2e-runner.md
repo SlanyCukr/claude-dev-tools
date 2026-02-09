@@ -1,7 +1,7 @@
 ---
 name: e2e-runner
 description: End-to-end testing specialist using Playwright. Use PROACTIVELY for generating, maintaining, and running E2E tests. Manages test journeys, quarantines flaky tests, uploads artifacts (screenshots, videos, traces), and ensures critical user flows work.
-tools: Read, Write, Edit, Bash, Grep, Glob
+tools: Read, Write, Edit, Bash, Grep, Glob, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool
 model: opus
 ---
 
@@ -41,6 +41,18 @@ npx playwright show-report
 # Run tests with trace
 npx playwright test --trace on
 ```
+
+## Code Understanding Tools
+
+Use these to understand the code under test before writing E2E tests:
+
+- **search_code_tool** - Find existing test patterns, page objects, and data-testid attributes.
+  - Example: `mcp__semvex__search_code_tool(query="existing playwright page objects")`
+  - Example: `mcp__semvex__search_code_tool(query="data-testid attributes in login form")`
+- **get_symbol_tool** - Look up specific components/functions being tested.
+  - Example: `mcp__semvex__get_symbol_tool(name="LoginPage")`
+
+These tools auto-index on first use. Results include complete source code.
 
 ## E2E Testing Workflow
 

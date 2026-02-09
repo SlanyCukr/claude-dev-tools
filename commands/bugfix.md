@@ -70,4 +70,4 @@ For **build errors**, include:
 ## When NOT to Use
 
 - You already know the fix (just use build-agent directly)
-- It's a new feature (use `/feature`)
+- It's a new feature (use `/plan`)

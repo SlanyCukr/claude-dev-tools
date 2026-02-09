@@ -1,7 +1,7 @@
 {
   "name": "claude-dev-tools",
   "description": "Claude Code plugin for delegating work to specialized subagents",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "author": {
     "name": "slanycukr"
   },
