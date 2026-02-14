@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/suggest-compact.js\""
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/tool-redirect.js\""
           }
         ]
       }
@@ -26,7 +26,62 @@
         "hooks": [
           {
             "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/file-checker.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/tdd-enforcer.js\""
+          },
+          {
+            "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/console-log-warning.js\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/file-checker.js\""
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/tdd-enforcer.js\""
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/context-monitor.js\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/stop-guard.js\""
+          },
+          {
+            "type": "prompt",
+            "prompt": "You are evaluating whether an AI assistant is trying to end a session while hiding incomplete or failed work.\n\nContext: $ARGUMENTS\n\nDetermine if ANY of these evasion patterns are present in the assistant's recent messages:\n\n1. DEFERRAL: Pushing unfinished work to 'later', 'follow-up', 'separate PR', 'next session'\n2. BLAME SHIFTING: Claiming failures are 'pre-existing', 'unrelated to changes'\n3. MINIMIZING: Downplaying issues as 'minor', 'cosmetic', 'edge case', 'good enough for now'\n4. SCOPE DODGING: Declaring work 'out of scope' without user agreement\n5. FALSE COMPLETION: Claiming task is done while tests fail, errors exist, or requirements are unmet\n6. SILENT SKIPPING: Omitting mention of known failures or skipped requirements\n\nIMPORTANT: If stop_hook_active is true, respond {\"ok\": true} immediately — do not re-block.\n\nRespond with JSON: {\"ok\": true} to allow stopping, or {\"ok\": false, \"reason\": \"explanation of evasion pattern detected\"} to continue working.",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-memory-loader.js\""
           }
         ]
       }

@@ -21,10 +21,11 @@ Goal-backward planning — derive "what must be TRUE?" from the goal, create a t
 2. Derive must_haves (observable truths, required artifacts, key links)
 3. codebase-explorer    → Discover existing patterns and constraints
 4. architect            → Design approach, break into tasks with dependencies
-5. Present plan + must_haves checklist to user
-6. plan-refiner         → Validate plan against project rules/conventions
-7. If issues found      → Revise and re-validate (max 2 rounds)
-8. Output approved plan as task list
+5. plan-verifier        → Check completeness (goal, acceptance criteria, tasks, dependencies, testing)
+6. plan-challenger      → Find failure modes (race conditions, error paths, security)
+7. plan-refiner         → Validate plan against project rules/conventions
+8. If issues found      → Revise and re-validate (max 2 rounds)
+9. Output approved plan as task list
 ```
 
 ## Must-Haves
@@ -59,12 +60,11 @@ Example for "Add JWT authentication":
 
 ## Plan Validation
 
-After the architect produces a plan, validate:
+After the architect produces a plan, validate through three stages:
 
-1. **Coverage**: Every must_have has tasks that produce it
-2. **Completeness**: No orphan tasks (every task connects to a must_have)
-3. **Dependencies**: Task order respects dependencies
-4. **Project rules**: plan-refiner checks against project conventions
+1. **Completeness (plan-verifier)**: Required sections exist (goal, acceptance criteria, tasks, dependencies, testing), acceptance criteria map to tasks
+2. **Assumptions (plan-challenger)**: Verify assumptions against codebase reality, generate failure scenarios (race conditions, error paths, security, edge cases)
+3. **Project Rules (plan-refiner)**: Check coverage (every must_have has tasks), dependencies, and project-specific conventions
 
 If validation finds gaps → revise plan (max 2 rounds), then present to user.
 
