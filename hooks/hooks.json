@@ -2,61 +2,30 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Edit",
+        "matcher": "Edit|Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/block_antipatterns.py\""
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/tool-redirect.js\""
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/pre_tool_checker.py\""
           }
         ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit",
+        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/file-checker.js\""
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/tdd-enforcer.js\""
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/console-log-warning.js\""
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/post_edit_checker.py\""
           }
         ]
       },
       {
-        "matcher": "Write",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/file-checker.js\""
-          },
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/tdd-enforcer.js\""
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/context-monitor.js\""
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/context_monitor.py\""
           }
         ]
       }
@@ -66,12 +35,32 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/stop-guard.js\""
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/stop_guard.py\""
           },
           {
-            "type": "prompt",
-            "prompt": "You are a JSON-only evaluator. Output ONLY raw JSON, no markdown, no explanation, no code fences.\n\nEvaluate whether an AI assistant is trying to end a session while hiding incomplete or failed work.\n\nContext: $ARGUMENTS\n\nCheck for these evasion patterns:\n1. DEFERRAL: Pushing unfinished work to 'later', 'follow-up', 'next session'\n2. BLAME SHIFTING: Claiming failures are 'pre-existing', 'unrelated'\n3. MINIMIZING: Downplaying issues as 'minor', 'edge case', 'good enough'\n4. SCOPE DODGING: Declaring work 'out of scope' without user agreement\n5. FALSE COMPLETION: Claiming done while tests fail or requirements unmet\n6. SILENT SKIPPING: Omitting mention of known failures\n\nIf stop_hook_active is true, respond {\"ok\": true} immediately.\n\nOutput ONLY one of:\n{\"ok\": true}\n{\"ok\": false, \"reason\": \"brief explanation\"}",
-            "timeout": 30
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/evasion_checker.py\"",
+            "timeout": 25
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/user_prompt_guard.py\""
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/task_completion_guard.py\""
           }
         ]
       }
@@ -81,7 +70,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-memory-loader.js\""
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session_memory_loader.py\""
           }
         ]
       }
