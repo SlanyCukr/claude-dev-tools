@@ -20,8 +20,9 @@ function readLastUsage(transcriptPath) {
     for (let i = lines.length - 1; i >= 0; i--) {
       try {
         const entry = JSON.parse(lines[i]);
-        if (entry.role === 'assistant' && entry.usage) {
-          return entry.usage;
+        const msg = entry.message;
+        if (msg && msg.role === 'assistant' && msg.usage) {
+          return msg.usage;
         }
       } catch {}
     }
