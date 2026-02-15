@@ -10,7 +10,7 @@ description: |
   - Call graph analysis - find callers, callees, and execution paths
   CALLING: Give specific query. Examples: "Find where UserService is defined", "How does authentication work?", "What are the naming conventions?", "Find all async functions in src/api/", "What calls the validate_token function?". Vague queries = bail with suggestions.
 model: sonnet
-tools: Read, Grep, Glob, Bash, Write, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool, mcp__semvex__list_file_symbols_tool, mcp__semvex__search_docs_tool, mcp__semvex__find_callers_tool, mcp__semvex__find_callees_tool, mcp__semvex__get_call_chain_tool, mcp__semvex__find_module_imports_tool, mcp__semvex__find_module_importers_tool
+tools: Read, Grep, Glob, Bash, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool, mcp__semvex__list_file_symbols_tool, mcp__semvex__search_docs_tool, mcp__semvex__find_callers_tool, mcp__semvex__find_callees_tool, mcp__semvex__get_call_chain_tool, mcp__semvex__find_module_imports_tool, mcp__semvex__find_module_importers_tool
 ---
 
 # Codebase Explorer

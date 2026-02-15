@@ -30,14 +30,15 @@ claude-dev-tools/
 │   ├── refactor-cleaner.md
 │   ├── architect.md
 │   ├── plan-refiner.md
-│   ├── plan-verifier.md       # NEW
-│   └── plan-challenger.md     # NEW
-├── commands/             # Slash commands (11 total)
+│   ├── plan-verifier.md
+│   └── plan-challenger.md
+├── commands/             # Slash commands (12 total)
 │   ├── quick.md          # /quick - Small task, minimal ceremony
 │   ├── plan.md           # /plan - Goal-backward planning with verification
 │   ├── research.md       # /research - Parallel research synthesis
 │   ├── bugfix.md         # /bugfix - Fix problems (bugs, build, perf)
 │   ├── debug.md          # /debug - Persistent debugging across sessions
+│   ├── review.md         # /review - Code quality + security review
 │   ├── security.md       # /security - Security review or audit
 │   ├── refactor.md       # /refactor - Dead code cleanup
 │   ├── verify.md         # /verify - Check implementation meets goal
@@ -52,17 +53,21 @@ claude-dev-tools/
 │   └── typescript-standards.md # TypeScript/JS conventions (*.ts/*.tsx/*.js/*.jsx only)
 ├── hooks/                # Event-driven automation
 │   ├── hooks.json        # Hook configuration
-│   ├── block_antipatterns.py
-│   ├── lib/              # Hook utilities
-│   │   └── utils.js
-│   └── scripts/          # Node.js hook implementations
-│       ├── file-checker.js        # Report-only linter
-│       ├── tool-redirect.js       # Suggest better tools
-│       ├── tdd-enforcer.js        # TDD reminder
-│       ├── context-monitor.js     # Context usage tracking
-│       ├── stop-guard.js          # Incomplete plan warning
-│       ├── session-memory-loader.js # Auto-load memories
-│       └── console-log-warning.js
+│   ├── block_antipatterns.py      # Antipattern detection (imported by orchestrator)
+│   └── scripts/          # Python hook implementations
+│       ├── pre_tool_checker.py    # PreToolUse orchestrator (antipatterns + tool redirect)
+│       ├── post_edit_checker.py   # PostToolUse orchestrator (lint + TDD + console.log)
+│       ├── file_checker.py        # Report-only linter (ruff, eslint, golangci-lint)
+│       ├── tool_redirect.py       # Suggest better tools
+│       ├── tdd_enforcer.py        # TDD reminder for implementation files
+│       ├── console_log_warning.py # Warn about console.log
+│       ├── context_monitor.py     # Context usage tracking
+│       ├── stop_guard.py          # Incomplete plan warning
+│       ├── evasion_checker.py     # LLM-based evasion detection
+│       ├── user_prompt_guard.py   # Catch quality bypass requests
+│       ├── task_completion_guard.py # Verify tasks done before marking complete
+│       ├── session_memory_loader.py # Auto-load memories
+│       └── _util.py               # Shared utilities
 ├── lib/                  # Supporting libraries
 │   └── toon.py           # TOON parser
 ├── scripts/              # Utility scripts
@@ -107,7 +112,7 @@ Each agent is a Markdown file with:
 
 ## Commands System
 
-Eleven commands for common development workflows:
+Twelve commands for common development workflows:
 
 | Command | Purpose | Key Agents |
 |---------|---------|------------|
@@ -116,6 +121,7 @@ Eleven commands for common development workflows:
 | /research | Parallel research synthesis | codebase-explorer, web-research, context7-docs |
 | /bugfix | Fix problems (bugs, build errors, perf) | root-cause → explore → tdd → build → review |
 | /debug | Persistent debugging across sessions | root-cause-agent, codebase-explorer, bash-commands |
+| /review | Code quality + security review | code-reviewer, security-reviewer |
 | /security | Security review or full audit | security-reviewer (+ explore → build if audit) |
 | /refactor | Dead code cleanup | refactor-cleaner → explore → build → review |
 | /verify | Check implementation meets its goal | codebase-explorer, bash-commands, code-reviewer |
@@ -141,17 +147,14 @@ Hooks intercept Claude Code lifecycle events:
 
 | Event | Hook | Purpose |
 |-------|------|---------|
-| PreToolUse (Edit) | block_antipatterns.py | Block backward compat, fallbacks |
-| PreToolUse (*) | tool-redirect.js | Suggest better tool alternatives |
-| PostToolUse (Edit) | file-checker.js | Report-only linter (ruff, eslint, golangci-lint) |
-| PostToolUse (Edit) | tdd-enforcer.js | TDD reminder for implementation files |
-| PostToolUse (Edit) | console-log-warning.js | Warn about console.log |
-| PostToolUse (Write) | file-checker.js | Report-only linter |
-| PostToolUse (Write) | tdd-enforcer.js | TDD reminder |
-| PostToolUse (*) | context-monitor.js | Track context usage, warn at thresholds |
-| Stop | stop-guard.js | Block on incomplete plan tasks |
-| Stop | prompt hook | LLM-based evasion detection |
-| SessionStart | session-memory-loader.js | Auto-load memories from previous sessions |
+| PreToolUse (Edit\|Bash) | pre_tool_checker.py | Consolidated: block antipatterns + suggest better tools |
+| PostToolUse (Write\|Edit) | post_edit_checker.py | Consolidated: linter + TDD reminder + console.log warning |
+| PostToolUse (*) | context_monitor.py | Track context usage, warn at thresholds |
+| Stop | stop_guard.py | Block on incomplete plan tasks |
+| Stop | evasion_checker.py | LLM-based evasion detection |
+| UserPromptSubmit | user_prompt_guard.py | Catch requests that bypass quality standards |
+| TaskCompleted | task_completion_guard.py | Verify tasks are actually done before marking complete |
+| SessionStart | session_memory_loader.py | Auto-load memories from previous sessions |
 
 ## Semvex-MCP Dependency
 

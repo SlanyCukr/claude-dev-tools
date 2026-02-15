@@ -1,6 +1,6 @@
 ---
 name: build-agent
-description: "Implements code changes (generic fallback). For Python use python-build-agent; for TypeScript/React/Next.js use react-nextjs-agent. CALLING: Give ONE task + relevant file paths (specs/docs for context, code to modify/reference). Don't paste contents - agent reads them."
+description: "Implements code changes for Go, Rust, and other languages without a dedicated agent. For Python use python-build-agent; for TypeScript/React/Next.js use react-nextjs-agent. CALLING: Give ONE task + relevant file paths (specs/docs for context, code to modify/reference). Don't paste contents - agent reads them."
 model: opus
 tools: Read, Edit, Write, Bash, Grep, Glob, Skill, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool
 skills: database-migrations, creating-features, enterprise-architecture

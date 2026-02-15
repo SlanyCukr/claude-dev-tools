@@ -1,7 +1,7 @@
 ---
 name: root-cause-agent
 description: "Diagnoses failures. CALLING: Give failure description + paths to logs/code. Don't paste logs - agent reads them. Include: symptoms, when started, what changed recently."
-tools: Read, Edit, Write, Grep, Bash, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool, mcp__semvex__list_file_symbols_tool, mcp__semvex__find_callers_tool, mcp__semvex__find_callees_tool, mcp__semvex__get_call_chain_tool
+tools: Read, Grep, Glob, Bash, mcp__semvex__search_code_tool, mcp__semvex__get_symbol_tool, mcp__semvex__list_file_symbols_tool, mcp__semvex__find_callers_tool, mcp__semvex__find_callees_tool, mcp__semvex__get_call_chain_tool
 model: opus
 ---
 

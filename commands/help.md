@@ -13,6 +13,7 @@ description: Quick reference for all commands
 | `/research` | Parallel research synthesis |
 | `/bugfix` | Fix problems (bugs, build errors, perf) |
 | `/debug` | Persistent debugging across sessions |
+| `/review` | Code quality + security review |
 | `/security` | Security review or full audit |
 | `/refactor` | Remove dead code |
 | `/verify` | Check if implementation meets its goal |
@@ -23,17 +24,25 @@ description: Quick reference for all commands
 ## Decision Tree
 
 ```
-Small, well-defined task?          → /quick
-Need to plan something?            → /plan
-Need to research before deciding?  → /research
+Small, well-defined task?          -> /quick
+  (< 3 files, clear instructions, no ambiguity)
+Need to plan something?            -> /plan
+  (multi-step, architectural decisions, unclear scope)
+Need to research before deciding?  -> /research
+  (comparing libraries, patterns, or approaches)
 Fix a problem?
-├── Simple / known cause           → /bugfix
-└── Complex / multi-session        → /debug
-Security review?                   → /security
-Remove dead code?                  → /refactor
-Check if work is complete?         → /verify
-Stopping for now?                  → /pause
-Coming back?                       → /resume
+|-- You know the cause or file     -> /bugfix
+|     (error message points to it, single root cause)
++-- Cause unclear or spans sessions -> /debug
+      (intermittent, hard to reproduce, needs investigation)
+Review code after changes?         -> /review
+  (quality + security in one pass)
+Deep security audit?               -> /security
+  (pre-deploy, auth changes, OWASP compliance)
+Remove dead code?                  -> /refactor
+Check if work is complete?         -> /verify
+Stopping for now?                  -> /pause
+Coming back?                       -> /resume
 ```
 
 ## Examples
@@ -55,10 +64,13 @@ Coming back?                       → /resume
 /debug              (continue existing session)
 /debug done         (close session)
 
+/review src/services/     (review recent changes in directory)
+/review git diff          (review uncommitted changes)
+
 /security src/auth/login.ts
 /security Full audit before deploy
 
-/refactor Clean up src/legacy/
+/refactor Clean up src/utils/
 /refactor Remove unused dependencies
 
 /verify The checkout flow handles all payment methods
@@ -71,14 +83,15 @@ Coming back?                       → /resume
 ## Cross-Feature Interactions
 
 ```
-/research ── standalone, feeds into /plan
-/plan     ── standalone, can follow up with /verify
-/quick    ── standalone, can follow up with /verify
-/debug    ── creates .debug-session.md
-              ├── /pause references it
-              ├── /resume reports it
-              └── /debug done → suggest /verify
-/pause    ── creates .handoff.md (references .debug-session.md)
-              └── /resume reads and deletes .handoff.md
-/verify   ── reads .handoff.md or .debug-session.md as goal sources
+/research -- standalone, feeds into /plan
+/plan     -- standalone, can follow up with /verify
+/quick    -- standalone, can follow up with /verify
+/review   -- standalone, runs after implementation
+/debug    -- creates .debug-session.md
+              |-- /pause references it
+              |-- /resume reports it
+              +-- /debug done -> suggest /verify
+/pause    -- creates .handoff.md (references .debug-session.md)
+              +-- /resume reads and deletes .handoff.md
+/verify   -- reads .handoff.md or .debug-session.md as goal sources
 ```

@@ -1,12 +1,5 @@
 # Testing Requirements
 
-## Minimum Test Coverage: 80%
-
-Test Types (ALL required):
-1. **Unit Tests** - Individual functions, utilities, components
-2. **Integration Tests** - API endpoints, database operations
-3. **E2E Tests** - Critical user flows (Playwright)
-
 ## Test-Driven Development
 
 MANDATORY workflow:
@@ -17,16 +10,12 @@ MANDATORY workflow:
 5. Refactor (IMPROVE)
 6. Verify coverage (80%+)
 
-## Test Quality Checklist
+## Test Types
 
-- [ ] All public functions have unit tests
-- [ ] All API endpoints have integration tests
-- [ ] Critical user flows have E2E tests
-- [ ] Edge cases covered (null, empty, invalid)
-- [ ] Error paths tested (not just happy path)
-- [ ] Mocks used for external dependencies
-- [ ] Tests are independent (no shared state)
-- [ ] Test names describe what's being tested
+All three required:
+1. **Unit Tests** - Individual functions, utilities, components
+2. **Integration Tests** - API endpoints, database operations
+3. **E2E Tests** - Critical user flows (Playwright)
 
 ## Coverage Requirements
 
@@ -59,6 +48,18 @@ npm test -- path/to/test.ts
 2. Check test isolation
 3. Verify mocks are correct
 4. Fix implementation, not tests (unless tests are wrong)
+
+## Verification Checklist
+
+Before committing code:
+- [ ] All public functions have unit tests
+- [ ] All API endpoints have integration tests
+- [ ] Critical user flows have E2E tests
+- [ ] Edge cases covered (null, empty, invalid)
+- [ ] Error paths tested (not just happy path)
+- [ ] Mocks used for external dependencies
+- [ ] Tests are independent (no shared state)
+- [ ] Test names describe what's being tested
 
 ## Agent Support
 

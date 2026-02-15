@@ -1,7 +1,7 @@
 ---
 name: web-research
 description: "Web search for docs/best practices. CALLING: Give specific topic + focus areas. Good for current conventions, tutorials, API docs not in Context7."
-tools: WebSearch, WebFetch, Write
+tools: WebSearch, WebFetch
 model: sonnet
 ---
 

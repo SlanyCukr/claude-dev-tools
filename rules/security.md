@@ -1,17 +1,5 @@
 # Security Guidelines
 
-## Mandatory Security Checks
-
-Before ANY commit:
-- [ ] No hardcoded secrets (API keys, passwords, tokens)
-- [ ] All user inputs validated
-- [ ] SQL injection prevention (parameterized queries)
-- [ ] XSS prevention (sanitized HTML)
-- [ ] CSRF protection enabled
-- [ ] Authentication/authorization verified
-- [ ] Rate limiting on all endpoints
-- [ ] Error messages don't leak sensitive data
-
 ## Secret Management
 
 ```typescript
@@ -75,6 +63,18 @@ If security issue found:
 3. Fix CRITICAL issues before continuing
 4. Rotate any exposed secrets
 5. Review entire codebase for similar issues
+
+## Verification Checklist
+
+Before committing security-sensitive code:
+- [ ] No hardcoded secrets (API keys, passwords, tokens)
+- [ ] All user inputs validated at system boundaries
+- [ ] SQL injection prevention (parameterized queries)
+- [ ] XSS prevention (sanitized HTML output)
+- [ ] CSRF protection enabled
+- [ ] Authentication/authorization verified
+- [ ] Rate limiting on public endpoints
+- [ ] Error messages don't leak sensitive data
 
 ## Agent Support
 

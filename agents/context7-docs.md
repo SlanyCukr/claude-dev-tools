@@ -1,7 +1,7 @@
 ---
 name: context7-docs
 description: "Library docs lookup. CALLING: Give library name + items to find (max 5). Example: 'FastAPI: Query, Depends, HTTPException'."
-tools: mcp__context7__resolve-library-id, mcp__context7__query-docs, Write
+tools: mcp__context7__resolve-library-id, mcp__context7__query-docs
 model: sonnet
 ---
 
