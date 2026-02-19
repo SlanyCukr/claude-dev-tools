@@ -62,7 +62,6 @@ claude-dev-tools/
 │       ├── tdd_enforcer.py        # TDD reminder for implementation files
 │       ├── console_log_warning.py # Warn about console.log
 │       ├── context_monitor.py     # Context usage tracking
-│       ├── stop_guard.py          # Incomplete plan warning
 │       ├── evasion_checker.py     # LLM-based evasion detection
 │       ├── user_prompt_guard.py   # Catch quality bypass requests
 │       ├── task_completion_guard.py # Verify tasks done before marking complete
@@ -150,7 +149,6 @@ Hooks intercept Claude Code lifecycle events:
 | PreToolUse (Edit\|Bash) | pre_tool_checker.py | Consolidated: block antipatterns + suggest better tools |
 | PostToolUse (Write\|Edit) | post_edit_checker.py | Consolidated: linter + TDD reminder + console.log warning |
 | PostToolUse (*) | context_monitor.py | Track context usage, warn at thresholds |
-| Stop | stop_guard.py | Block on incomplete plan tasks |
 | Stop | evasion_checker.py | LLM-based evasion detection |
 | UserPromptSubmit | user_prompt_guard.py | Catch requests that bypass quality standards |
 | TaskCompleted | task_completion_guard.py | Verify tasks are actually done before marking complete |
