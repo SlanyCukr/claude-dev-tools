@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stop hook: detect evasion patterns in assistant's last response via z.ai GLM API.
+"""Stop hook: detect evasion patterns in assistant's last response via DashScope API.
 
 Returns JSON {"decision": "block", "reason": "..."} when evasion is detected,
 which forces Claude Code to continue working instead of stopping.
@@ -16,9 +16,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from _util import is_waiting_for_user_input, read_hook_stdin
 
-ZAI_API_URL = "https://api.z.ai/api/coding/paas/v4/chat/completions"
-ZAI_API_KEY = os.environ.get("ZAI_API_KEY", "")
-ZAI_MODEL = "GLM-4.5-air"
+API_URL = "https://coding-intl.dashscope.aliyuncs.com/v1/chat/completions"
+API_KEY = os.environ.get("DASHSCOPE_API_KEY", "")
+MODEL = "glm-4.7"
 TIMEOUT_SECONDS = 20
 
 EVASION_PROMPT = """\
@@ -65,14 +65,6 @@ def get_last_assistant_text(transcript_path: str) -> str:
     return ""
 
 
-def _extract_json_from_reasoning(reasoning: str) -> str:
-    """Try to find a JSON object in reasoning_content when content is empty."""
-    import re
-    # Look for {"ok": ...} pattern in reasoning text
-    match = re.search(r'\{[^{}]*"ok"\s*:\s*(?:true|false)[^{}]*\}', reasoning)
-    return match.group(0) if match else ""
-
-
 def parse_json_response(text: str) -> dict | None:
     """Parse JSON from model response, stripping markdown fences if present."""
     text = text.strip()
@@ -87,14 +79,14 @@ def parse_json_response(text: str) -> dict | None:
         return None
 
 
-def call_zai(assistant_text: str) -> dict | None:
-    """Call z.ai API to check for evasion patterns. Returns parsed JSON or None."""
+def call_llm(assistant_text: str) -> dict | None:
+    """Call DashScope API to check for evasion patterns. Returns parsed JSON or None."""
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {ZAI_API_KEY}",
+        "Authorization": f"Bearer {API_KEY}",
     }
     body = json.dumps({
-        "model": ZAI_MODEL,
+        "model": MODEL,
         "messages": [
             {"role": "system", "content": EVASION_PROMPT},
             {"role": "user", "content": f"Assistant's response:\n\n{assistant_text[:8000]}"},
@@ -103,17 +95,11 @@ def call_zai(assistant_text: str) -> dict | None:
         "temperature": 0,
     }).encode()
 
-    req = urllib.request.Request(ZAI_API_URL, data=body, headers=headers)
+    req = urllib.request.Request(API_URL, data=body, headers=headers)
     try:
         resp = urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS)
         result = json.loads(resp.read())
-        message = result["choices"][0]["message"]
-        content = message.get("content", "")
-        # GLM sometimes puts the answer in reasoning_content with empty content
-        if not content:
-            reasoning = message.get("reasoning_content", "")
-            if reasoning:
-                content = _extract_json_from_reasoning(reasoning)
+        content = result["choices"][0]["message"].get("content", "")
         if not content:
             return None
         return parse_json_response(content)
@@ -142,7 +128,7 @@ def main() -> int:
     if not assistant_text:
         return 0
 
-    result = call_zai(assistant_text)
+    result = call_llm(assistant_text)
     if result is None:
         # API error — don't block
         return 0
