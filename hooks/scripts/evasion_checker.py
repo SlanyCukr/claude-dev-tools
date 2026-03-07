@@ -19,7 +19,7 @@ from _util import is_waiting_for_user_input, read_hook_stdin
 API_URL = "https://coding-intl.dashscope.aliyuncs.com/v1/chat/completions"
 API_KEY = os.environ.get("DASHSCOPE_API_KEY", "")
 MODEL = "glm-4.7"
-TIMEOUT_SECONDS = 20
+TIMEOUT_SECONDS = 30
 
 EVASION_PROMPT = """\
 You are a quality gate evaluating whether an AI coding assistant should stop working.
@@ -96,15 +96,15 @@ def call_llm(assistant_text: str) -> dict | None:
     }).encode()
 
     req = urllib.request.Request(API_URL, data=body, headers=headers)
-    try:
-        resp = urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS)
-        result = json.loads(resp.read())
-        content = result["choices"][0]["message"].get("content", "")
-        if not content:
-            return None
-        return parse_json_response(content)
-    except Exception:
-        return None
+    resp = urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS)
+    result = json.loads(resp.read())
+    content = result["choices"][0]["message"].get("content", "")
+    if not content:
+        raise ValueError("LLM returned empty content")
+    parsed = parse_json_response(content)
+    if parsed is None:
+        raise ValueError(f"Failed to parse LLM response as JSON: {content[:200]}")
+    return parsed
 
 
 def main() -> int:
@@ -128,15 +128,16 @@ def main() -> int:
     if not assistant_text:
         return 0
 
-    result = call_llm(assistant_text)
-    if result is None:
-        # API error — don't block
+    try:
+        result = call_llm(assistant_text)
+    except Exception as e:
+        reason = f"Evasion checker error: {e}"
+        print(json.dumps({"decision": "block", "reason": reason}))
         return 0
 
     if result.get("ok") is False:
         reason = result.get("reason", "Evasion pattern detected")
-        output = json.dumps({"decision": "block", "reason": reason})
-        print(output)
+        print(json.dumps({"decision": "block", "reason": reason}))
         return 0
 
     return 0
